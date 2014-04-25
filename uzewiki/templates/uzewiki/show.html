@@ -1,0 +1,40 @@
+{% extends "uzewiki/base.html" %}
+{% load markuple %}
+
+{% block js %}
+{{ block.super }}
+<script src="{{ STATIC_URL }}uzewiki/js/show.js"></script>
+{% endblock %}
+
+
+{% block wiki_menu %}
+    <ul class="breadcrumbs">
+        {% for crumb in breadcrumbs %}
+            {% if forloop.last %}
+                <li>{{ crumb.title }}</li>
+            {% else %}
+                <li><a href="{{ crumb.url }}" class="wiki{{ crumb.class }}">{{ crumb.title }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    {% if edit_url %}
+    <ul>
+    <li><a href="{{ edit_url }}" id="uzewiki_edit">Edit page</a></li>
+    </ul>
+    {% endif %}
+{% endblock %}
+
+{% block wiki_content %}
+<div class="wiki_page">
+    {% if page %}
+        {% markuple mu_parser mu_context %}{{ page.content|safe }}{% endmarkuple %}
+    {% else %}
+        <p>This page does not exist yet.</p>
+        {% if edit_url %}
+        <ul>
+        <li><a href="{{ edit_url }}">Create this page</a></li>
+        </ul>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

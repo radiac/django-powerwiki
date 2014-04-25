@@ -1,0 +1,88 @@
+div.wiki_menu {
+    background:#eee;
+    padding: 0.2em;
+    font-size: 0.8em;
+    margin-bottom: 1em;
+}
+
+div.wiki_menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+div.wiki_menu li {
+    display: inline-block;
+    margin-right: 0.3em;
+}
+
+div.wiki_menu .breadcrumbs {
+    background: #ddd;
+}
+
+div.wiki_menu li:before {
+    content:    '\2022';
+    padding-right: 0.3em;
+}
+div.wiki_menu .breadcrumbs li:before {
+    content:    '\00bb';
+}
+div.wiki_menu li:first-child:before {
+    content:    '';
+    padding:    0;
+}
+
+div.wiki_menu a {
+    color:  #666;
+}
+div.wiki_menu a:hover {
+    color:  #222;
+}
+
+
+form.wiki_form p input[type="text"],
+form.wiki_form p textarea,
+form.wiki_form p span.helptext {
+    display: block;
+}
+
+form.wiki_form p label {
+    font-weight:    bold;
+}
+form.wiki_form p input[type="text"],
+form.wiki_form p textarea {
+    width: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+form.wiki_form p span.helptext {
+    color: #666;
+    font-size: 0.8em;
+}
+
+
+
+a.wiki.doesnotexist {
+    color:  #692e24;
+    text-decoration: none;
+    border-bottom: 1px dashed #692e24;
+}
+a.wiki.doesnotexist:hover {
+    color:  #a24738;
+}
+
+div.wiki_page pre {
+    margin-left:    2em;
+}
+div.wiki_page pre code {
+    border: 1px dashed #ccc;
+    background: #fffff0;
+    padding:    0.5em;
+    display: block;
+    overflow-x: auto;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}

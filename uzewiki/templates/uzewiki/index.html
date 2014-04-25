@@ -1,0 +1,14 @@
+{% extends "uzewiki/base.html" %}
+{% load markuple %}
+
+{% block content %}
+    {% if wikis %}
+        <dl class="table">
+        {% for wiki in wikis %}
+            <dt><a href="{{ wiki.get_absolute_url }}">{{ wiki.title }}</a></dt>
+            <dd>{{ wiki.description|markuple|default:"&nbsp;" }}</dd>
+        {% endfor %}
+    {% else %}
+        <p>There are no wikis available.</p>
+    {% endif %}
+{% endblock %}

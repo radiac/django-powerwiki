@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}uzewiki/css/styles.css" type="text/css" />
+{{ block.super }}
+{% endblock %}
+
+{% block js %}
+{{ block.super }}
+{% if uzewiki_settings.add_jquery %}
+<script src="{{ STATIC_URL }}uzewiki/js/jquery-1.10.2.min.js"></script>
+{% endif %}
+{% endblock %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div class="wiki_menu">
+        {% block wiki_menu %}{% endblock %}
+    </div>
+
+    {% block wiki_content %}
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "uzewiki/base.html" %}
+
+{% block js %}
+{{ block.super }}
+<script src="{{ STATIC_URL }}uzewiki/js/edit.js"></script>
+{% endblock %}
+
+
+{% block wiki_menu %}
+    {% if show_url %}
+    <ul>
+    <li><a href="{{ show_url }}">Show page</a></li>
+    </ul>
+    {% endif %}
+{% endblock %}
+
+
+{% block wiki_content %}
+
+<form action="." method="POST" class="wiki_form">
+{% csrf_token %}
+
+{{ form.wiki }}
+{{ form.slug }}
+{{ form.non_field_errors }}
+
+<p>
+    {{ form.title }}
+    {{ form.title.errors }}
+</p>
+<p>
+    {{ form.content }}
+    {{ form.content.errors }}
+</p>
+<p><input type="submit" value="Save" /></p>
+
+</form>
+
+<script>
+
+</script>
+
+{% endblock %}

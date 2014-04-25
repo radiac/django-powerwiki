@@ -1,0 +1,32 @@
+===============
+Uzewiki Changes
+===============
+
+Changelog
+=========
+
+0.1.0       2014-
+            Feature:    Initial release
+
+
+Roadmap
+=======
+
+Target
+0.0.*       {% can_wiki [wiki_slug] %} ... {% else %} ... {% endif %} template tag
+            Wiki create/edit view for admins
+            "Manage wiki" section for admins
+            * Edit wiki
+            * Import and export
+            Asset upload view
+            Asset archiving
+            ``convert_wiki`` to convert assets from dokuwiki
+            ``convert_wiki`` to support more wikis (eg mediawiki)
+            ``export_wiki`` to support a target wiki (eg dokuwiki, mediawiki)
+            Test wikirest template tag, add wikimarkdown
+            Support markdown
+            Support ReST
+            Integrate with timewarp
+1.0.0       Stable release, make available on PyPI
+
+The roadmap is subject to change; let me know if something is important to you.
