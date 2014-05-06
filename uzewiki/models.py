@@ -34,7 +34,7 @@ class Wiki(models.Model):
         help_text="Default edit permissions",
     )
     users       = models.ManyToManyField(
-        User, through='WikiPermissions', related_name='+',
+        User, through='WikiPermissions', related_name="wikis"
     )
     
     def __unicode__(self):
