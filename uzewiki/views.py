@@ -12,7 +12,7 @@ from uzewiki.decorators import (
     get_wiki, permission_required, read_required, edit_required,
 )
 from uzewiki.utils import reverse_to_page, redirect_to_page, title_from_slug
-from uzewiki.wikimarkup import parser as markuple_parser
+from uzewiki.markuplext import parser as markuple_parser
 
 def render(request, template, dct, **kwargs):
     "Inject uzewiki settings into template render"
