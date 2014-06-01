@@ -67,37 +67,11 @@ def show(request, wiki, wiki_slug, page_slug=None):
     else:
         edit_url = None
     
-    # Prep breadcrumbs
-    breadcrumbs = [{
-        'title':    wiki.title,
-        'class':    '',
-        'url':      wiki.get_absolute_url()
-    }]
-    if page_slug != settings.FRONT_SLUG:
-        slug_root = ''
-        for slug_fragment in page_slug.split('/'):
-            slug = slug_root + slug_fragment
-            try:
-                crumb = models.Page.objects.get(wiki=wiki, slug=slug)
-                breadcrumbs.append({
-                    'title':    crumb.full_title(),
-                    'class':    '',
-                    'url':      crumb.get_absolute_url(),
-                })
-            except models.Page.DoesNotExist:
-                breadcrumbs.append({
-                    'title':    title_from_slug(slug_fragment),
-                    'class':    ' doesnotexist',
-                    'url':      reverse_to_page('uzewiki-edit', wiki_slug, slug),
-                })
-            slug_root += slug_fragment + '/'
-        
-    
     # Prepare page content
     return render(request, 'uzewiki/show.html', {
         'page':     page,
         'title':    title,
-        'breadcrumbs': breadcrumbs,
+        'breadcrumbs': wiki.gen_breadcrumbs(page_slug),
         'edit_url': edit_url,
         'mu_parser':    markuple_parser,
         'mu_context':   {
@@ -157,6 +131,9 @@ def edit(request, wiki, wiki_slug, page_slug):
     return render(request, 'uzewiki/edit.html', {
         'form': form,
         'title': 'Edit page: %s' % page_slug,
+        'breadcrumbs': wiki.gen_breadcrumbs(page_slug) + [{
+            'title':    'Edit page',
+        }],
         'show_url': reverse_to_page('uzewiki-show', wiki_slug, page_slug)
     })
 

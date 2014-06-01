@@ -1,44 +1,87 @@
-div.wiki_menu {
-    background:#eee;
-    padding: 0.2em;
-    font-size: 0.8em;
+/*
+** Uzewiki styles
+*/
+
+
+/******************************************************************************
+**                                                              Menu bar
+*/
+
+.wiki_menu {
+    width:          100%;
+    overflow:       hidden;
+    padding:        0.6em 0 1em 0;
+    margin:         0;
+    border-bottom:  1px solid #ccc;
+    background:     #fff;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing:    border-box; /* Firefox, other Gecko */
+    box-sizing:         border-box; /* Opera/IE 8+ */
     margin-bottom: 1em;
 }
 
-div.wiki_menu ul {
+.wiki_menu ul {
+    float:      left;
     list-style: none;
     padding: 0;
     margin: 0;
 }
+.wiki_menu ul.wiki_menu_admin {
+    float:      right;
+}
 
-div.wiki_menu li {
+.wiki_menu > ul + ul {
+    margin-left:   16px;
+}
+
+.wiki_menu li {
     display: inline-block;
-    margin-right: 0.3em;
+    font-size:  0.8em;
+    color:      #666;
 }
 
-div.wiki_menu .breadcrumbs {
-    background: #ddd;
+.wiki_menu a,
+.wiki_menu li:before {
+    height:     24px;
+    line-height:    24px;
+    border:     1px solid #ccc;
+    color:      #666;
+    background-color: #f8f8f8;
+    font-weight:    bold;
+    text-decoration:    none;
+}
+.wiki_menu a {
+    display:    block;
+    padding:    0 8px;
+}
+.wiki_menu a:hover {
+    color:      #000;
+    background-color: #fff;
 }
 
-div.wiki_menu li:before {
-    content:    '\2022';
+.wiki_menu_breadcrumbs a,
+.wiki_menu_breadcrumbs li:before {
+    padding:    0;
+    display:    inline-block;
+    border:     1px solid transparent;
+    background-color:   transparent;
+    font-weight:    normal;
+}
+.wiki_menu_breadcrumbs a {
+    text-decoration:    underline;
+}
+
+.wiki_menu_breadcrumbs li:before {
+    content:    '\00bb';
     padding-right: 0.3em;
 }
-div.wiki_menu .breadcrumbs li:before {
-    content:    '\00bb';
-}
-div.wiki_menu li:first-child:before {
-    content:    '';
-    padding:    0;
+.wiki_menu_breadcrumbs li:first-child:before {
+    display:    none;
 }
 
-div.wiki_menu a {
-    color:  #666;
-}
-div.wiki_menu a:hover {
-    color:  #222;
-}
-
+/******************************************************************************
+**                                                              Form
+*/
 
 form.wiki_form p input[type="text"],
 form.wiki_form p textarea,

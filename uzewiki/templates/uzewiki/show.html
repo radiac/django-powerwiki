@@ -8,17 +8,8 @@
 
 
 {% block wiki_menu %}
-    <ul class="breadcrumbs">
-        {% for crumb in breadcrumbs %}
-            {% if forloop.last %}
-                <li>{{ crumb.title }}</li>
-            {% else %}
-                <li><a href="{{ crumb.url }}" class="wiki{{ crumb.class }}">{{ crumb.title }}</a></li>
-            {% endif %}
-        {% endfor %}
-    </ul>
     {% if edit_url %}
-    <ul>
+    <ul class="wiki_menu_admin">
     <li><a href="{{ edit_url }}" id="uzewiki_edit">Edit page</a></li>
     </ul>
     {% endif %}

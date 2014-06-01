@@ -16,6 +16,17 @@
 
 {% block content %}
     <div class="wiki_menu">
+        {% if breadcrumbs %}
+        <ul class="wiki_menu_breadcrumbs">
+            {% for crumb in breadcrumbs %}
+                {% if forloop.last %}
+                    <li>{{ crumb.title }}</li>
+                {% else %}
+                    <li><a href="{{ crumb.url }}" class="wiki{{ crumb.class }}">{{ crumb.title }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% endif %}
         {% block wiki_menu %}{% endblock %}
     </div>
 

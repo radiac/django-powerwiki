@@ -81,7 +81,38 @@ class Wiki(models.Model):
         except self.user_permissions.model.DoesNotExist:
             return False
         return user_perm.can_edit
-
+        
+    def gen_breadcrumbs(self, page_slug):
+        """
+        Given a wiki and page slug, build breadcrumbs
+        """
+        breadcrumbs = [{
+            'title':    self.title,
+            'class':    '',
+            'url':      self.get_absolute_url()
+        }]
+        if page_slug != settings.FRONT_SLUG:
+            slug_root = ''
+            for slug_fragment in page_slug.split('/'):
+                slug = slug_root + slug_fragment
+                try:
+                    crumb = Page.objects.get(wiki=self, slug=slug)
+                    breadcrumbs.append({
+                        'title':    crumb.full_title(),
+                        'class':    '',
+                        'url':      crumb.get_absolute_url(),
+                    })
+                except Page.DoesNotExist:
+                    breadcrumbs.append({
+                        'title':    utils.title_from_slug(slug_fragment),
+                        'class':    ' doesnotexist',
+                        'url':      utils.reverse_to_page(
+                            'uzewiki-edit', self.slug, slug,
+                        ),
+                    })
+                slug_root += slug_fragment + '/'
+        return breadcrumbs
+    
     class Meta:
         ordering = ('title',)
 
