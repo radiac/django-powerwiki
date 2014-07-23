@@ -7,6 +7,7 @@ from uzewiki import archive
 from uzewiki import constants
 from uzewiki import forms
 from uzewiki import models
+from uzewiki import searchengine
 from uzewiki import settings
 from uzewiki.decorators import (
     get_wiki, permission_required, read_required, edit_required,
@@ -71,16 +72,42 @@ def show(request, wiki, wiki_slug, page_slug=None):
     return render(request, 'uzewiki/show.html', {
         'page':     page,
         'title':    title,
+        'wiki_slug': wiki_slug,
         'breadcrumbs': wiki.gen_breadcrumbs(page_slug),
         'edit_url': edit_url,
         'mu_parser':    markuple_parser,
         'mu_context':   {
             'page': page,
             'wiki': wiki,
-        }
+        },
     }, status=404 if not page else None,)
     
 
+@get_wiki
+@read_required
+def search(request, wiki, wiki_slug):
+    """
+    Search a wiki
+    """
+    query = request.GET.get('q', '').strip()
+    pages = searchengine.search_model(
+        query,
+        models.Page.objects,
+        ['title', 'content'],
+    )
+    
+    return render(request, 'uzewiki/search.html', {
+        'title':    'Search',
+        'wiki_slug': wiki_slug,
+        'breadcrumbs': wiki.gen_breadcrumbs(settings.FRONT_SLUG) + [{
+            'title':    'Search',
+            'class':    '',
+            'url':      '',
+        }],
+        'search_query': query,
+        'pages': pages,
+    })
+    
 
 @get_wiki
 @edit_required

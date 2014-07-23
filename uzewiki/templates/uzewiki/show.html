@@ -8,11 +8,17 @@
 
 
 {% block wiki_menu %}
-    {% if edit_url %}
-    <ul class="wiki_menu_admin">
-    <li><a href="{{ edit_url }}" id="uzewiki_edit">Edit page</a></li>
+    <ul class="wiki_menu_options">
+        <li>
+            <form action="{% url "uzewiki-search" wiki_slug=wiki_slug %}" method="GET" class="wiki_form">
+            <input type="text" name="q" placeholder="Search" value="{{ search_query }}">
+            <input type="submit" value="Go">
+            </form>
+        </li>
+        {% if edit_url %}
+        <li><a href="{{ edit_url }}" id="uzewiki_edit">Edit page</a></li>
+        {% endif %}
     </ul>
-    {% endif %}
 {% endblock %}
 
 {% block wiki_content %}
