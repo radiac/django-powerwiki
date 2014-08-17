@@ -61,7 +61,8 @@
     background-color:   #fff;
 }
 
-.wiki_menu a:hover {
+.wiki_menu a:hover,
+.wiki_menu input[type=submit]:hover {
     color:      #000;
     background-color: #fff;
 }

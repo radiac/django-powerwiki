@@ -12,7 +12,6 @@ from uzewiki import archive
 from uzewiki import constants
 from uzewiki import forms
 from uzewiki import models
-from uzewiki import searchengine
 from uzewiki import settings
 from uzewiki.decorators import (
     get_wiki, permission_required, read_required, edit_required,
