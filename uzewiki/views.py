@@ -3,6 +3,11 @@ from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render as django_render
 
+try:
+    from simple_search import perform_search
+except ImportError:
+    perform_search = None
+
 from uzewiki import archive
 from uzewiki import constants
 from uzewiki import forms
@@ -90,14 +95,18 @@ def search(request, wiki, wiki_slug):
     Search a wiki
     """
     query = request.GET.get('q', '').strip()
-    pages = searchengine.search_model(
-        query,
-        models.Page.objects,
-        ['title', 'content'],
-    )
+    
+    if perform_search is None:
+        pages = []
+    else:
+        pages = perform_search(
+            query,
+            models.Page.objects,
+            ['title', 'content'],
+        )
     
     return render(request, 'uzewiki/search.html', {
-        'title':    'Search',
+        'title':    'Search' if perform_search is not None else 'Search unavailable',
         'wiki_slug': wiki_slug,
         'breadcrumbs': wiki.gen_breadcrumbs(settings.FRONT_SLUG) + [{
             'title':    'Search',
