@@ -109,6 +109,24 @@
     border:     1px solid #ccc;
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+**                                                              Mobile menu
+*/
+
+@media all and (max-width:640px) {
+    .wiki_menu ul,
+    .wiki_menu ul.wiki_menu_options {
+        float:      none;
+        margin-left:    0;
+    }
+    .wiki_menu ul.wiki_menu_options li:first-child {
+        margin-left:   0;
+    }
+}
+
+
 /******************************************************************************
 **                                                              Form
 */
@@ -125,6 +143,7 @@ form.wiki_form p label {
 form.wiki_form p input[type="text"],
 form.wiki_form p textarea {
     width: 100%;
+    font-family: monospace;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -135,7 +154,30 @@ form.wiki_form p span.helptext {
     font-size: 0.8em;
 }
 
+.wiki_form_header {
+    overflow:   hidden;
+    width:      100%;
+}
+.wiki_form_header .wiki_form_title {
+    margin:     0 6em 0 0;
+}
+.wiki_form_header .wiki_form_save {
+    margin:     0;
+    float:      right;
+}
+.wiki_form_header .wiki_form_save input[type=submit] {
+    padding:        0 0.6em;
+    margin:         0;
+    line-height:    1.5em;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
 
+
+/******************************************************************************
+**                                                              Show styles
+*/
 
 a.wiki.doesnotexist {
     color:  #692e24;

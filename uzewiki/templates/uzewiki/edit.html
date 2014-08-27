@@ -8,7 +8,7 @@
 
 {% block wiki_menu %}
     {% if show_url %}
-    <ul class="wiki_menu_admin">
+    <ul class="wiki_menu_options">
     <li><a href="{{ show_url }}">Show page</a></li>
     </ul>
     {% endif %}
@@ -24,15 +24,19 @@
 {{ form.slug }}
 {{ form.non_field_errors }}
 
-<p>
-    {{ form.title }}
-    {{ form.title.errors }}
-</p>
+<div class="wiki_form_header">
+    <p class="wiki_form_save">
+        <input type="submit" value="Save" />
+    </p>
+    <p class="wiki_form_title">
+        {{ form.title }}
+        {{ form.title.errors }}
+    </p>
+</div>
 <p>
     {{ form.content }}
     {{ form.content.errors }}
 </p>
-<p><input type="submit" value="Save" /></p>
 
 </form>
 
