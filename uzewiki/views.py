@@ -100,7 +100,7 @@ def search(request, wiki, wiki_slug):
     else:
         pages = perform_search(
             query,
-            models.Page,
+            wiki.pages.all(),
             ['title', 'content'],
         )
     
