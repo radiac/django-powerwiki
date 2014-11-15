@@ -23,6 +23,9 @@ if settings.SINGLE:
         url(r'^$', 'show', url_dict,
             name='uzewiki-show',
         ),
+        url(r'^$', 'show', url_dict,
+            name='uzewiki-index',
+        ),
     )
 else:
     urlpatterns = patterns('uzewiki.views',
