@@ -10,7 +10,10 @@ class PageForm(forms.ModelForm):
         widgets = {
             'wiki': forms.HiddenInput(),
             'slug': forms.HiddenInput(),
-            'title': forms.TextInput(attrs={'placeholder': 'Title'}),
+            'title': forms.TextInput(attrs={
+                'placeholder':  'Title',
+                'autocomplete': 'off',
+            }),
             'content': forms.Textarea(attrs={'class': 'code'}),
         }
 
