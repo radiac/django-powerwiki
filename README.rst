@@ -39,7 +39,18 @@ versions of Yarr will need changes to the database.
 Installation
 ============
 
-* Link to urls.py
+1. Install ``django-uzewiki`` (currently only on github)::
+
+    pip install -e git+https://github.com/radiac/django-uzewiki.git#egg=django-uzewiki
+
+2. Add to ``INSTALLED_APPS``::
+
+    INSTALLED_APPS = (
+        ...
+        'uzewiki',
+    )
+
+3. Link to urls.py
 
   * To install a single wiki change your settings for ``UZEWIKI_SINGLE`` and
     ``UZEWIKI_SINGLE_NAME``
@@ -49,7 +60,7 @@ Installation
     are running in single wiki mode, that will be the front page of the wiki,
     or in multi wiki mode it will be the list of available wikis.
 
-* Templates
+4. Templates
   * Expects your site ``base.html`` to have ``title``, ``css`` and ``content``
     blocks.
 

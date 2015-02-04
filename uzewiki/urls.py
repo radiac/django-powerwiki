@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, include, url
 
 from uzewiki import settings
 
@@ -22,6 +22,9 @@ if settings.SINGLE:
         ),
         url(r'^$', 'show', url_dict,
             name='uzewiki-show',
+        ),
+        url(r'^$', 'show', url_dict,
+            name='uzewiki-index',
         ),
     )
 else:
