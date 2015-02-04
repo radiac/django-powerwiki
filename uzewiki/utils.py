@@ -5,7 +5,6 @@ import unicodedata
 import re
 
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
 from django.utils.safestring import mark_safe
 
 from uzewiki import constants
@@ -39,7 +38,7 @@ def has_permission(user, permission):
 
 def reverse_to_page(view, wiki_slug, page_slug=None):
     """
-    Return an HTTP redirect to the given page
+    Return the URL for the given page
     """
     kwargs = {}
     if not settings.SINGLE:
@@ -47,15 +46,6 @@ def reverse_to_page(view, wiki_slug, page_slug=None):
     if page_slug and not (view == 'uzewiki-show' and page_slug == settings.FRONT_SLUG):
         kwargs['page_slug'] = page_slug
     return reverse(view, kwargs=kwargs)
-
-
-def redirect_to_page(view, wiki_slug, page_slug=None):
-    """
-    Return an HttpResponseRedirect to the given page
-    """
-    return HttpResponseRedirect(
-        reverse_to_page(view, wiki_slug, page_slug)
-    )
 
 
 def wikislugify(value):
@@ -78,3 +68,15 @@ def title_from_slug(value):
         value = value[slug_index+1:]
     
     return re.sub('[-\s_]+', ' ', value).title()
+
+
+def reverse_to_asset(view, wiki_slug, asset_name=None):
+    """
+    Return the URL for the given asset view
+    """
+    kwargs = {}
+    if not settings.SINGLE:
+        kwargs['wiki_slug'] = wiki_slug
+    if asset_name:
+        kwargs['asset_name'] = asset_name
+    return reverse(view, kwargs=kwargs)

@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.http import Http404, HttpResponseForbidden
+from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render as django_render
 
@@ -16,7 +16,7 @@ from uzewiki import settings
 from uzewiki.decorators import (
     get_wiki, permission_required, read_required, edit_required,
 )
-from uzewiki.utils import reverse_to_page, redirect_to_page, title_from_slug
+from uzewiki.utils import reverse_to_page, reverse_to_asset, title_from_slug
 from uzewiki.markuplext import parser as markuple_parser
 
 def render(request, template, dct, **kwargs):
@@ -52,7 +52,9 @@ def show(request, wiki, wiki_slug, page_slug=None):
     """
     # Enforce canonical slugs
     if page_slug and page_slug != page_slug.lower():
-        return redirect_to_page('uzewiki-show', wiki_slug, page_slug.lower())
+        return HttpResponseRedirect(
+            reverse_to_page('uzewiki-show', wiki_slug, page_slug.lower())
+        )
     
     # Hide the page slug
     if not page_slug:
@@ -125,7 +127,9 @@ def edit(request, wiki, wiki_slug, page_slug):
     """
     # Page slugs must always be lower case
     if page_slug != page_slug.lower():
-        return redirect_to_page('uzewiki-edit', wiki_slug, page_slug.lower())
+        return HttpResponseRedirect(
+            reverse_to_page('uzewiki-edit', wiki_slug, page_slug.lower())
+        )
     
     # Look up page
     try:
@@ -149,7 +153,9 @@ def edit(request, wiki, wiki_slug, page_slug):
             else:
                 form.save()
                 messages.success(request, 'Page saved.')
-                return redirect_to_page('uzewiki-show', wiki_slug, page_slug)
+                return HttpResponseRedirect(
+                    reverse_to_page('uzewiki-show', wiki_slug, page_slug)
+                )
         else:
             messages.error(request, 'Error processing form.')
     
@@ -193,7 +199,9 @@ def wiki_import(request, wiki, wiki_slug):
                 messages.error(request, 'Wiki could not be imported: %s' % e)
             else:
                 messages.success(request, 'Wiki imported')
-                return redirect_to_page('uzewiki-show', wiki_slug)
+                return HttpResponseRedirect(
+                    reverse_to_page('uzewiki-show', wiki_slug)
+                )
     else:
         form = forms.ImportForm()
         
@@ -201,4 +209,99 @@ def wiki_import(request, wiki, wiki_slug):
         'form': form,
         'title': 'Import wiki: %s' % wiki_slug,
         'show_url': reverse_to_page('uzewiki-show', wiki_slug)
+    })
+
+
+@get_wiki
+@read_required
+def asset_details(request, wiki, wiki_slug, asset_name):
+    """
+    Show asset details
+    """
+    # Asset slugs must always be lower case
+    if asset_name != asset_name.lower():
+        return HttpResponseRedirect(
+            reverse_to_asset('uzewiki-asset', wiki_slug, asset_name.lower())
+        )
+    
+    # Get asset
+    asset = get_object_or_404(wiki.assets, name=asset_name)
+    
+    if wiki.can_edit(request.user):
+        edit_url = reverse_to_asset('uzewiki-asset-edit', wiki_slug, asset_name)
+    else:
+        edit_url = None
+    
+    # Prepare page content
+    return render(request, 'uzewiki/asset_details.html', {
+        'wiki_slug': wiki_slug,
+        'title':    'Asset: %s' % asset_name,
+        'breadcrumbs': wiki.gen_breadcrumbs() + [{
+            'title':    'Asset',
+        }],
+        'asset':    asset,
+        'edit_url': edit_url,
+        'edit_label': 'Edit asset',
+    })
+    
+
+@get_wiki
+@edit_required
+def asset_edit(request, wiki, wiki_slug, asset_name):
+    """
+    Edit an asset
+    """
+    # Asset slugs must always be lower case
+    if asset_name != asset_name.lower():
+        return HttpResponseRedirect(
+            reverse_to_asset('uzewiki-asset', wiki_slug, asset_name.lower())
+        )
+    
+    # Look up asset
+    initial = {}
+    try:
+        asset = models.Asset.objects.get(wiki=wiki, name=asset_name)
+    except models.Asset.DoesNotExist:
+        asset = None
+        initial = {
+            'wiki': wiki,
+            'name': asset_name,
+        }
+        
+    # Save or display form
+    if request.method == 'POST':
+        form = forms.AssetForm(request.POST, request.FILES, instance=asset)
+        
+        if form.is_valid():
+            # Check wiki hasn't been modified in the form
+            if form.cleaned_data['wiki'] != wiki:
+                # Don't worry about being helpful - this is a deliberate
+                # attempt to subvert the authentication system
+                messages.error(request, 'Trying to save to invalid wiki.')
+            else:
+                asset = form.save()
+                messages.success(request, 'Asset saved.')
+                return HttpResponseRedirect(
+                    reverse_to_asset('uzewiki-asset', wiki_slug, asset_name)
+                )
+        else:
+            messages.error(request, 'Error processing form.')
+    
+    else:
+        form = forms.AssetForm(initial=initial, instance=asset)
+    
+    breadcrumbs = wiki.gen_breadcrumbs()
+    if asset:
+        breadcrumbs += [{
+            'title':    'Asset',
+            'url':      asset.get_absolute_url(),
+        }]
+    breadcrumbs += [{
+        'title':    'Edit asset',
+    }]
+    
+    return render(request, 'uzewiki/asset_edit.html', {
+        'form':     form,
+        'title':    'Edit asset %s' % asset_name,
+        'breadcrumbs': breadcrumbs,
     })

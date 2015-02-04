@@ -1,0 +1,15 @@
+{% extends "uzewiki/show.html" %}
+{% load markuple %}
+
+
+{% block wiki_content %}
+<div class="wiki_page">
+    <img src="{{ asset.image.url }}">
+    
+    {% if edit_url %}
+    <ul>
+    <li><a href="{{ edit_url }}">{{ edit_label }}</a></li>
+    </ul>
+    {% endif %}
+</div>
+{% endblock %}

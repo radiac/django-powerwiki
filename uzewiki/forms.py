@@ -23,3 +23,13 @@ class ImportForm(forms.Form):
     wipe = forms.BooleanField(
         required=False, initial=False, help_text="Wipe the wiki first",
     )
+
+
+class AssetForm(forms.ModelForm):
+    class Meta:
+        model = Asset
+        fields = ['wiki', 'name', 'image']
+        widgets = {
+            'wiki': forms.HiddenInput(),
+            'name': forms.HiddenInput(),
+        }

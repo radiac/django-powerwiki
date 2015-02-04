@@ -6,7 +6,9 @@ import re
 import markuple
 
 from uzewiki import models
-from uzewiki.utils import reverse_to_page, wikislugify, title_from_slug
+from uzewiki.utils import (
+    reverse_to_page, reverse_to_asset, wikislugify, title_from_slug
+)
 
 
 inline_registry = markuple.inlines.default_registry.copy()
@@ -49,10 +51,41 @@ class Page(markuple.inlines.RegexInline):
             'class':    link_class,
         }
 
-class Asset(markuple.inlines.Inline):
+
+class Asset(markuple.inlines.RegexInline):
     name = 'asset'
     registry = inline_registry
-
+    match = re.compile(
+        r'\[\[asset:(?P<asset_name>[-\w]+)\]\]',
+        re.IGNORECASE
+    )
+    html = '<a href="%(url)s" class="%(class)s">%(_)s</a>'
+    
+    def as_html(self, context):
+        html_kwargs = self.html_kwargs(context)
+        wiki = context['wiki']
+        link_class = 'wiki'
+        
+        # Get asset
+        asset_name = wikislugify(html_kwargs['asset_name'])
+        try:
+            asset = wiki.assets.get(name=asset_name)
+        except wiki.assets.model.DoesNotExist:
+            link_class += ' doesnotexist'
+            content = asset_name
+            url = reverse_to_asset('uzewiki-asset-edit', wiki.slug, asset_name)
+        else:
+            content = '<img src="%(url)s">' % {
+                'url':  asset.image.url
+            }
+            url = reverse_to_asset('uzewiki-asset', wiki.slug, asset_name)
+        
+        return self.html % {
+            'class': link_class,
+            'url':  url,
+            '_':    content,
+        }
+        
 parser = markuple.parser.Parser(
     inline_parser=markuple.inlines.InlineParser(inline_registry)
 )

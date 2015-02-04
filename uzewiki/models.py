@@ -1,6 +1,8 @@
 """
 Uzewiki models
 """
+import os
+
 from django.db import models
 
 try:
@@ -82,7 +84,7 @@ class Wiki(models.Model):
             return False
         return user_perm.can_edit
         
-    def gen_breadcrumbs(self, page_slug):
+    def gen_breadcrumbs(self, page_slug=None):
         """
         Given a wiki and page slug, build breadcrumbs
         """
@@ -91,7 +93,7 @@ class Wiki(models.Model):
             'class':    '',
             'url':      self.get_absolute_url()
         }]
-        if page_slug != settings.FRONT_SLUG:
+        if page_slug and page_slug != settings.FRONT_SLUG:
             slug_root = ''
             for slug_fragment in page_slug.split('/'):
                 slug = slug_root + slug_fragment
@@ -159,9 +161,7 @@ class Page(models.Model):
     
     
 def asset_upload_to(asset, filename):
-    # ++ need to check dir path?
-    # ++ should use os to join it
-    return '/'.join(['wiki', filename])
+    return os.path.join('wiki', asset.wiki.slug, filename)
 
 class Asset(models.Model):
     """
@@ -169,4 +169,9 @@ class Asset(models.Model):
     """
     wiki        = models.ForeignKey(Wiki, related_name='assets')
     name        = models.SlugField(help_text="Internal name for the asset")
-    file        = models.FileField(upload_to=asset_upload_to)
+    image       = models.ImageField(upload_to=asset_upload_to)
+
+    def get_absolute_url(self):
+        return utils.reverse_to_asset(
+            'uzewiki-asset', self.wiki.slug, self.name,
+        )

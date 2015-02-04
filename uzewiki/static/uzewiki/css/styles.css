@@ -178,6 +178,10 @@ form.wiki_form p span.helptext {
 **                                                              Show styles
 */
 
+a.wiki img {
+    border: 0;
+}
+
 a.wiki.doesnotexist {
     color:  #692e24;
     text-decoration: none;
