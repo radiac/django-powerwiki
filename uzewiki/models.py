@@ -6,10 +6,9 @@ import os
 from django.db import models
 
 try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
+    from django.conf.settings import AUTH_USER_MODEL
 except ImportError:
-    from django.contrib.auth.models import User
+    AUTH_USER_MODEL = 'auth.User'
 
 from uzewiki import constants, settings, utils, fields
 
@@ -36,17 +35,17 @@ class Wiki(models.Model):
         help_text="Default edit permissions",
     )
     users       = models.ManyToManyField(
-        User, through='WikiPermissions', related_name="wikis"
+        AUTH_USER_MODEL, through='WikiPermissions', related_name="wikis"
     )
-    
+
     def __unicode__(self):
         return u'%s' % self.title
-    
+
     def get_absolute_url(self):
         return utils.reverse_to_page(
             'uzewiki-show', self.slug, settings.FRONT_SLUG,
         )
-    
+
     def can_read(self, user):
         """
         Check that the user can read
@@ -55,7 +54,7 @@ class Wiki(models.Model):
         # Check generic wiki permission
         if utils.has_permission(user, self.perm_read):
             return True
-        
+
         # Check overrides
         if not user.is_authenticated():
             return False
@@ -64,8 +63,8 @@ class Wiki(models.Model):
         except self.user_permissions.model.DoesNotExist:
             return False
         return user_perm.can_read
-            
-        
+
+
     def can_edit(self, user):
         """
         Check that the user can read
@@ -74,7 +73,7 @@ class Wiki(models.Model):
         # Check generic wiki permission
         if utils.has_permission(user, self.perm_edit):
             return True
-        
+
         # Check overrides
         if not user.is_authenticated():
             return False
@@ -83,7 +82,7 @@ class Wiki(models.Model):
         except self.user_permissions.model.DoesNotExist:
             return False
         return user_perm.can_edit
-        
+
     def gen_breadcrumbs(self, page_slug=None):
         """
         Given a wiki and page slug, build breadcrumbs
@@ -114,13 +113,13 @@ class Wiki(models.Model):
                     })
                 slug_root += slug_fragment + '/'
         return breadcrumbs
-    
+
     class Meta:
         ordering = ('title',)
 
 
 class WikiPermissions(models.Model):
-    user = models.ForeignKey(User, related_name="wiki_permissions")
+    user = models.ForeignKey(AUTH_USER_MODEL, related_name="wiki_permissions")
     wiki = models.ForeignKey(Wiki, related_name="user_permissions")
     can_read    = models.BooleanField(
         default=True, help_text="User can read the wiki",
@@ -128,8 +127,8 @@ class WikiPermissions(models.Model):
     can_edit = models.BooleanField(
         default=True, help_text="User can edit the wiki",
     )
-    
-    
+
+
 class Page(models.Model):
     """
     Wiki page
@@ -145,21 +144,21 @@ class Page(models.Model):
         default=False, help_text="If locked, can only be edited by wiki admin",
     )
     content     = models.TextField(blank=True, help_text="Page content",)
-    
+
     def full_title(self):
         return '%s' % (self.title)
-    
+
     def get_absolute_url(self):
         return utils.reverse_to_page('uzewiki-show', self.wiki.slug, self.slug)
-    
+
     def __unicode__(self):
         return self.title
-    
+
     class Meta:
         unique_together = ('wiki', 'slug')
         ordering = ('title',)
-    
-    
+
+
 def asset_upload_to(asset, filename):
     return os.path.join('wiki', asset.wiki.slug, filename)
 
