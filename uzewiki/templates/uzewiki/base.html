@@ -1,14 +1,15 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block css %}
-<link rel="stylesheet" href="{{ STATIC_URL }}uzewiki/css/styles.css" type="text/css" />
+<link rel="stylesheet" href="{% static "uzewiki/css/styles.css" %}" type="text/css" />
 {{ block.super }}
 {% endblock %}
 
 {% block js %}
 {{ block.super }}
 {% if uzewiki_settings.add_jquery %}
-<script src="{{ STATIC_URL }}uzewiki/js/jquery-1.10.2.min.js"></script>
+<script src="{% static "uzewiki/js/jquery-1.10.2.min.js" %}"></script>
 {% endif %}
 {% endblock %}
 
