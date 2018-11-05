@@ -37,6 +37,6 @@ try:
         [], ["^uzewiki\.fields\.WikiSlugField"],
     )
 
-except ImportError, e:
+except ImportError:
     # South not installed
     pass

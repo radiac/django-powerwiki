@@ -17,7 +17,6 @@ from uzewiki.decorators import (
     get_wiki, permission_required, read_required, edit_required,
 )
 from uzewiki.utils import reverse_to_page, reverse_to_asset, title_from_slug
-from uzewiki.markuplext import parser as markuple_parser
 
 def render(request, template, dct, **kwargs):
     "Inject uzewiki settings into template render"
@@ -37,7 +36,7 @@ def index(request):
     for wiki in models.Wiki.objects.all():
         if wiki.can_read(request.user):
             wikis.append(wiki)
-    
+
     return render(request, 'uzewiki/index.html', {
         'title':    'Available Wikis',
         'wikis':    wikis,
@@ -55,11 +54,11 @@ def show(request, wiki, wiki_slug, page_slug=None):
         return HttpResponseRedirect(
             reverse_to_page('uzewiki-show', wiki_slug, page_slug.lower())
         )
-    
+
     # Hide the page slug
     if not page_slug:
         page_slug = settings.FRONT_SLUG
-    
+
     # Look up page
     try:
         page = models.Page.objects.get(wiki=wiki, slug=page_slug)
@@ -67,13 +66,13 @@ def show(request, wiki, wiki_slug, page_slug=None):
     except models.Page.DoesNotExist:
         page = None
         title = 'New page: %s' % title_from_slug(page_slug)
-        
+
     if wiki.can_edit(request.user):
         edit_url = reverse_to_page('uzewiki-edit', wiki_slug, page_slug)
-            
+
     else:
         edit_url = None
-    
+
     # Prepare page content
     return render(request, 'uzewiki/show.html', {
         'page':     page,
@@ -81,13 +80,8 @@ def show(request, wiki, wiki_slug, page_slug=None):
         'wiki_slug': wiki_slug,
         'breadcrumbs': wiki.gen_breadcrumbs(page_slug),
         'edit_url': edit_url,
-        'mu_parser':    markuple_parser,
-        'mu_context':   {
-            'page': page,
-            'wiki': wiki,
-        },
     }, status=404 if not page else None,)
-    
+
 
 @get_wiki
 @read_required
@@ -96,7 +90,7 @@ def search(request, wiki, wiki_slug):
     Search a wiki
     """
     query = request.GET.get('q', '').strip()
-    
+
     if perform_search is None:
         pages = []
     else:
@@ -105,7 +99,7 @@ def search(request, wiki, wiki_slug):
             wiki.pages.all(),
             ['title', 'content'],
         )
-    
+
     return render(request, 'uzewiki/search.html', {
         'title':    'Search' if perform_search is not None else 'Search unavailable',
         'wiki_slug': wiki_slug,
@@ -117,7 +111,7 @@ def search(request, wiki, wiki_slug):
         'search_query': query,
         'pages': pages,
     })
-    
+
 
 @get_wiki
 @edit_required
@@ -130,20 +124,20 @@ def edit(request, wiki, wiki_slug, page_slug):
         return HttpResponseRedirect(
             reverse_to_page('uzewiki-edit', wiki_slug, page_slug.lower())
         )
-    
+
     # Look up page
     try:
         page = models.Page.objects.get(wiki=wiki, slug=page_slug)
     except models.Page.DoesNotExist:
         page = None
-        
+
     # Save or display form
     if request.method == 'POST':
         if page:
             form = forms.PageForm(request.POST, instance=page)
         else:
             form = forms.PageForm(request.POST)
-        
+
         if form.is_valid():
             # Check wiki hasn't been modified in the form
             if form.cleaned_data['wiki'] != wiki:
@@ -158,7 +152,7 @@ def edit(request, wiki, wiki_slug, page_slug):
                 )
         else:
             messages.error(request, 'Error processing form.')
-    
+
     else:
         if page:
             form = forms.PageForm(instance=page)
@@ -168,7 +162,7 @@ def edit(request, wiki, wiki_slug, page_slug):
                 'title':    title_from_slug(page_slug),
                 'slug':     page_slug,
             })
-        
+
     return render(request, 'uzewiki/edit.html', {
         'form': form,
         'title': 'Edit page: %s' % page_slug,
@@ -191,11 +185,11 @@ def wiki_import(request, wiki, wiki_slug):
             # Wipe
             if form.cleaned_data['wipe']:
                 wiki.pages.all().delete()
-            
+
             # Import
             try:
                 archive.import_zip(wiki, request.FILES['file'])
-            except archive.ZipImportError, e:
+            except archive.ZipImportError as e:
                 messages.error(request, 'Wiki could not be imported: %s' % e)
             else:
                 messages.success(request, 'Wiki imported')
@@ -204,7 +198,7 @@ def wiki_import(request, wiki, wiki_slug):
                 )
     else:
         form = forms.ImportForm()
-        
+
     return render(request, 'uzewiki/import.html', {
         'form': form,
         'title': 'Import wiki: %s' % wiki_slug,
@@ -223,15 +217,15 @@ def asset_details(request, wiki, wiki_slug, asset_name):
         return HttpResponseRedirect(
             reverse_to_asset('uzewiki-asset', wiki_slug, asset_name.lower())
         )
-    
+
     # Get asset
     asset = get_object_or_404(wiki.assets, name=asset_name)
-    
+
     if wiki.can_edit(request.user):
         edit_url = reverse_to_asset('uzewiki-asset-edit', wiki_slug, asset_name)
     else:
         edit_url = None
-    
+
     # Prepare page content
     return render(request, 'uzewiki/asset_details.html', {
         'wiki_slug': wiki_slug,
@@ -243,7 +237,7 @@ def asset_details(request, wiki, wiki_slug, asset_name):
         'edit_url': edit_url,
         'edit_label': 'Edit asset',
     })
-    
+
 
 @get_wiki
 @edit_required
@@ -256,7 +250,7 @@ def asset_edit(request, wiki, wiki_slug, asset_name):
         return HttpResponseRedirect(
             reverse_to_asset('uzewiki-asset', wiki_slug, asset_name.lower())
         )
-    
+
     # Look up asset
     initial = {}
     try:
@@ -267,11 +261,11 @@ def asset_edit(request, wiki, wiki_slug, asset_name):
             'wiki': wiki,
             'name': asset_name,
         }
-        
+
     # Save or display form
     if request.method == 'POST':
         form = forms.AssetForm(request.POST, request.FILES, instance=asset)
-        
+
         if form.is_valid():
             # Check wiki hasn't been modified in the form
             if form.cleaned_data['wiki'] != wiki:
@@ -286,10 +280,10 @@ def asset_edit(request, wiki, wiki_slug, asset_name):
                 )
         else:
             messages.error(request, 'Error processing form.')
-    
+
     else:
         form = forms.AssetForm(initial=initial, instance=asset)
-    
+
     breadcrumbs = wiki.gen_breadcrumbs()
     if asset:
         breadcrumbs += [{
@@ -299,7 +293,7 @@ def asset_edit(request, wiki, wiki_slug, asset_name):
     breadcrumbs += [{
         'title':    'Edit asset',
     }]
-    
+
     return render(request, 'uzewiki/asset_edit.html', {
         'form':     form,
         'title':    'Edit asset %s' % asset_name,

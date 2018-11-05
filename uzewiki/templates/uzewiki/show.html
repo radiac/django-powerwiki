@@ -1,5 +1,5 @@
 {% extends "uzewiki/base.html" %}
-{% load markuple %}
+{% load wikirest %}
 
 {% block js %}
 {{ block.super }}
@@ -24,7 +24,7 @@
 {% block wiki_content %}
 <div class="wiki_page">
     {% if page %}
-        {% markuple mu_parser mu_context %}{{ page.content|safe }}{% endmarkuple %}
+        {{ page.content|safe|wikirest }}
     {% else %}
         <p>This page does not exist yet.</p>
         {% if edit_url %}
