@@ -1,8 +1,9 @@
 {% extends "uzewiki/base.html" %}
+{% load static %}
 
 {% block js %}
 {{ block.super }}
-<script src="{{ STATIC_URL }}uzewiki/js/edit.js"></script>
+<script src="{% static "uzewiki/js/edit.js" %}"></script>
 {% endblock %}
 
 

@@ -38,12 +38,12 @@ class Wiki(models.Model):
         AUTH_USER_MODEL, through='WikiPermissions', related_name="wikis"
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.title
 
     def get_absolute_url(self):
         return utils.reverse_to_page(
-            'uzewiki-show', self.slug, settings.FRONT_SLUG,
+            'uzewiki:show', self.slug, settings.FRONT_SLUG,
         )
 
     def can_read(self, user):
@@ -108,7 +108,7 @@ class Wiki(models.Model):
                         'title':    utils.title_from_slug(slug_fragment),
                         'class':    ' doesnotexist',
                         'url':      utils.reverse_to_page(
-                            'uzewiki-edit', self.slug, slug,
+                            'uzewiki:edit', self.slug, slug,
                         ),
                     })
                 slug_root += slug_fragment + '/'
@@ -149,9 +149,9 @@ class Page(models.Model):
         return '%s' % (self.title)
 
     def get_absolute_url(self):
-        return utils.reverse_to_page('uzewiki-show', self.wiki.slug, self.slug)
+        return utils.reverse_to_page('uzewiki:show', self.wiki.slug, self.slug)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     class Meta:
@@ -172,5 +172,5 @@ class Asset(models.Model):
 
     def get_absolute_url(self):
         return utils.reverse_to_asset(
-            'uzewiki-asset', self.wiki.slug, self.name,
+            'uzewiki:asset', self.wiki.slug, self.name,
         )

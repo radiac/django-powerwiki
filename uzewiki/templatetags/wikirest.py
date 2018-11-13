@@ -40,7 +40,7 @@ def gen_wikilink(matchobj):
         # Look up the asset
         try:
             asset = Asset.objects.get(name=slug)
-        except Asset.DoesNotExist, e:
+        except Asset.DoesNotExist:
             # ++ Link to asset upload page
             return '(Missing asset: %s)' % slug
 
@@ -59,7 +59,7 @@ def gen_wikilink(matchobj):
         slugged_slug = slugify(slug)
         try:
             page = Page.objects.get(slug=slugged_slug)
-        except Page.DoesNotExist, e:
+        except Page.DoesNotExist:
             link_class = 'wiki doesnotexist'
 
         # Reverse the URL

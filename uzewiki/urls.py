@@ -13,48 +13,48 @@ if settings.SINGLE:
             r'^(?P<page_slug>[-\w]+(/[-\w]+)*)/:edit/$',
             views.edit,
             url_dict,
-            name='uzewiki-edit',
+            name='edit',
         ),
         url(
             r'^(?P<page_slug>[-\w]+(/[-\w]+)*)/$',
             views.show,
             url_dict,
-            name='uzewiki-show',
+            name='show',
         ),
         url(
             r'^:import/$',
             views.wiki_import,
             url_dict,
-            name='uzewiki-import',
+            name='import',
         ),
         url(
             r'^:search/$',
             views.search,
             url_dict,
-            name='uzewiki-search',
+            name='search',
         ),
         url(
             r'^:asset/(?P<asset_name>[-\w]+)/$',
             views.asset_details,
             url_dict,
-            name='uzewiki-asset',
+            name='asset',
         ),
         url(
             r'^:asset/(?P<asset_name>[-\w]+)/edit/$',
             views.asset_edit,
             url_dict,
-            name='uzewiki-asset-edit',
+            name='asset-edit',
         ),
         url(r'^$',
             views.show,
             url_dict,
-            name='uzewiki-show',
+            name='show',
         ),
         url(
             r'^$',
             views.show,
             url_dict,
-            name='uzewiki-index',
+            name='index',
         ),
     ]
 else:
@@ -62,41 +62,41 @@ else:
         url(
             r'^(?P<wiki_slug>[-\w]+)/(?P<page_slug>[-\w]+(/[-\w]+)*)/:edit/$',
             views.edit,
-            name='uzewiki-edit',
+            name='edit',
         ),
         url(
             r'^(?P<wiki_slug>[-\w]+)/(?P<page_slug>[-\w]+(/[-\w]+)*)/$',
             views.show,
-            name='uzewiki-show'
+            name='show'
         ),
         url(
             r'^(?P<wiki_slug>[-\w]+)/$',
             views.show,
-            name='uzewiki-show'
+            name='show'
         ),
         url(
             r'^(?P<wiki_slug>[-\w]+)/:import/$',
             views.wiki_import,
-            name='uzewiki-import',
+            name='import',
         ),
         url(
             r'^(?P<wiki_slug>[-\w]+)/:search/$',
             views.search,
-            name='uzewiki-search',
+            name='search',
         ),
         url(
             r'^(?P<wiki_slug>[-\w]+)/:asset/(?P<asset_name>[-\w]+)/$',
             views.asset_details,
-            name='uzewiki-asset',
+            name='asset',
         ),
         url(
             r'^(?P<wiki_slug>[-\w]+)/:asset/(?P<asset_name>[-\w]+)/edit/$',
             views.asset_edit,
-            name='uzewiki-asset-edit',
+            name='asset-edit',
         ),
         url(
             r'^$',
             views.index,
-            name='uzewiki-index'
+            name='index'
         ),
     ]

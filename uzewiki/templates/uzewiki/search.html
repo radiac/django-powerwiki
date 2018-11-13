@@ -8,7 +8,7 @@
 {% block wiki_menu %}
     <ul class="wiki_menu_options">
         <li>
-            <form action="{% url "uzewiki-search" wiki_slug=wiki_slug %}" method="GET" class="wiki_form">
+            <form action="{% url "uzewiki:search" wiki_slug=wiki_slug %}" method="GET" class="wiki_form">
             <input type="text" name="q" placeholder="Search" value="{{ search_query }}">
             <input type="submit" value="Go">
             </form>

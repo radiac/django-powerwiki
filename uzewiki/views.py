@@ -52,7 +52,7 @@ def show(request, wiki, wiki_slug, page_slug=None):
     # Enforce canonical slugs
     if page_slug and page_slug != page_slug.lower():
         return HttpResponseRedirect(
-            reverse_to_page('uzewiki-show', wiki_slug, page_slug.lower())
+            reverse_to_page('uzewiki:show', wiki_slug, page_slug.lower())
         )
 
     # Hide the page slug
@@ -68,7 +68,7 @@ def show(request, wiki, wiki_slug, page_slug=None):
         title = 'New page: %s' % title_from_slug(page_slug)
 
     if wiki.can_edit(request.user):
-        edit_url = reverse_to_page('uzewiki-edit', wiki_slug, page_slug)
+        edit_url = reverse_to_page('uzewiki:edit', wiki_slug, page_slug)
 
     else:
         edit_url = None
@@ -122,7 +122,7 @@ def edit(request, wiki, wiki_slug, page_slug):
     # Page slugs must always be lower case
     if page_slug != page_slug.lower():
         return HttpResponseRedirect(
-            reverse_to_page('uzewiki-edit', wiki_slug, page_slug.lower())
+            reverse_to_page('uzewiki:edit', wiki_slug, page_slug.lower())
         )
 
     # Look up page
@@ -148,7 +148,7 @@ def edit(request, wiki, wiki_slug, page_slug):
                 form.save()
                 messages.success(request, 'Page saved.')
                 return HttpResponseRedirect(
-                    reverse_to_page('uzewiki-show', wiki_slug, page_slug)
+                    reverse_to_page('uzewiki:show', wiki_slug, page_slug)
                 )
         else:
             messages.error(request, 'Error processing form.')
@@ -169,7 +169,7 @@ def edit(request, wiki, wiki_slug, page_slug):
         'breadcrumbs': wiki.gen_breadcrumbs(page_slug) + [{
             'title':    'Edit page',
         }],
-        'show_url': reverse_to_page('uzewiki-show', wiki_slug, page_slug)
+        'show_url': reverse_to_page('uzewiki:show', wiki_slug, page_slug)
     })
 
 
@@ -194,7 +194,7 @@ def wiki_import(request, wiki, wiki_slug):
             else:
                 messages.success(request, 'Wiki imported')
                 return HttpResponseRedirect(
-                    reverse_to_page('uzewiki-show', wiki_slug)
+                    reverse_to_page('uzewiki:show', wiki_slug)
                 )
     else:
         form = forms.ImportForm()
@@ -202,7 +202,7 @@ def wiki_import(request, wiki, wiki_slug):
     return render(request, 'uzewiki/import.html', {
         'form': form,
         'title': 'Import wiki: %s' % wiki_slug,
-        'show_url': reverse_to_page('uzewiki-show', wiki_slug)
+        'show_url': reverse_to_page('uzewiki:show', wiki_slug)
     })
 
 
@@ -215,14 +215,14 @@ def asset_details(request, wiki, wiki_slug, asset_name):
     # Asset slugs must always be lower case
     if asset_name != asset_name.lower():
         return HttpResponseRedirect(
-            reverse_to_asset('uzewiki-asset', wiki_slug, asset_name.lower())
+            reverse_to_asset('uzewiki:asset', wiki_slug, asset_name.lower())
         )
 
     # Get asset
     asset = get_object_or_404(wiki.assets, name=asset_name)
 
     if wiki.can_edit(request.user):
-        edit_url = reverse_to_asset('uzewiki-asset-edit', wiki_slug, asset_name)
+        edit_url = reverse_to_asset('uzewiki:asset-edit', wiki_slug, asset_name)
     else:
         edit_url = None
 
@@ -248,7 +248,7 @@ def asset_edit(request, wiki, wiki_slug, asset_name):
     # Asset slugs must always be lower case
     if asset_name != asset_name.lower():
         return HttpResponseRedirect(
-            reverse_to_asset('uzewiki-asset', wiki_slug, asset_name.lower())
+            reverse_to_asset('uzewiki:asset', wiki_slug, asset_name.lower())
         )
 
     # Look up asset
@@ -276,7 +276,7 @@ def asset_edit(request, wiki, wiki_slug, asset_name):
                 asset = form.save()
                 messages.success(request, 'Asset saved.')
                 return HttpResponseRedirect(
-                    reverse_to_asset('uzewiki-asset', wiki_slug, asset_name)
+                    reverse_to_asset('uzewiki:asset', wiki_slug, asset_name)
                 )
         else:
             messages.error(request, 'Error processing form.')

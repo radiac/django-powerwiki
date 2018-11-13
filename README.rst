@@ -50,15 +50,19 @@ Installation
         'uzewiki',
     )
 
-3. Link to urls.py
+3.  Link to urls.py
 
-  * To install a single wiki change your settings for ``UZEWIKI_SINGLE`` and
-    ``UZEWIKI_SINGLE_NAME``
-  * If you want to use a custom URL structure, remember to check UPGRADES in the
-    future for notice of changes to ``urls.py``
-  * The front page of the wiki app will always be ``uzewiki-index`` - if you
-    are running in single wiki mode, that will be the front page of the wiki,
-    or in multi wiki mode it will be the list of available wikis.
+    * To install a single wiki change your settings for ``UZEWIKI_SINGLE`` and
+      ``UZEWIKI_SINGLE_NAME``
+    * If you want to use a custom URL structure, remember to check UPGRADES in the
+      future for notice of changes to ``urls.py``
+    * The front page of the wiki app will always be ``index`` - if you
+      are running in single wiki mode, that will be the front page of the wiki,
+      or in multi wiki mode it will be the list of available wikis.
+
+    Example::
+
+        url(r'^wiki/', include('uzewiki.urls', namespace='uzewiki')),
 
 4. Templates
   * Expects your site ``base.html`` to have ``title``, ``css`` and ``content``
