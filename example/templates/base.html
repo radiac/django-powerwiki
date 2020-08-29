@@ -1,0 +1,98 @@
+{% spaceless %}
+{% load static %}
+
+<!DOCTYPE html>
+{% endspaceless %}
+<html>
+
+<head>
+  <title>{{ title }}</title>
+    {% block css %}
+      {% if not WEBPACK_DEV_URL %}
+        <link rel="stylesheet" href="{% static "powerwiki/index.css" %}" type="text/css" />
+      {% endif %}
+    {% endblock %}
+
+    <style>
+        html {
+            height: 100%;
+        }
+        body {
+            padding: 0;
+            margin: 0;
+            font-family: "Open Sans", sans-serif;
+        }
+        header {
+            border-bottom: 1px solid #888;
+        }
+        header h1 {
+            font-size: 1em;
+            line-height: 1.5em;
+            margin: 0;
+            padding: 0 10px;
+        }
+
+        #messages ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #messages li {
+            padding: 5px 10px;
+            background: #aaa;
+        }
+        #messages li.success {
+            background: #afa;
+        }
+        #messages li.error {
+            background: #faa;
+        }
+
+        /* Style to max height */
+        body.powerwiki_edit {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        body.powerwiki_edit header {
+            flex: 0 0 auto;
+        }
+        body.powerwiki_edit main {
+            flex: 1 0 auto;
+        }
+    </style>
+
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+<header>
+    <h1>{% block title %}{{ title }}{% endblock %}</h1>
+
+    <div id="messages">
+        <ul>
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if messages %}
+    {% endif %}
+</header>
+
+<main id="content">
+    {% block content %}
+    {% endblock %}
+</main>
+
+{% block js %}
+  {% if WEBPACK_DEV_URL %}
+    <script src="{{ WEBPACK_DEV_URL }}powerwiki/index.js"></script>
+  {% else %}
+    <script src="{% static "powerwiki/index.js" %}"></script>
+  {% endif %}
+{% endblock %}
+
+</body>
+
+</html>

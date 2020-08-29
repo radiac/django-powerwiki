@@ -1,8 +1,8 @@
-=================================
-Django Uzewiki - Wikis for Django
-=================================
+===============================================
+Django Powerwiki - Run multiple wikis in Django
+===============================================
 
-An advanced Wiki system for Django
+A work in progress wiki system for Django 2.2+
 
 
 Features
@@ -10,50 +10,30 @@ Features
 
 * Run one or multiple wikis from one installation
 * Full control over who can read and edit content, by user or group
-* Chose from a variety of markup languages
-* Support for a full history and drafts
-* Migration tools for moving from other wikis
+* Create pages in markdown or restructured text
 
-Version 0.0.1
-
-* See `CHANGES <CHANGES>`_ for full changelog and roadmap
-* See `UPGRADE <UPGRADE.rst>`_ for how to upgrade from earlier releases
-
-
-Requirements
-============
-
-These packages are required:
-
-* Django >= 1.3
-* django-timewarp
-
-These packages are optional:
-
-* pretext
-
-It is recommended that you use ``South`` to manage schema migrations, as future
-versions of Yarr will need changes to the database.
+See `Upgrading <docs/upgrading.rst>`_ for changelog and upgrade instructions
 
 
 Installation
 ============
 
-1. Install ``django-uzewiki`` (currently only on github)::
+1. Install ``django-powerwiki`` (currently only on github)::
 
-    pip install -e git+https://github.com/radiac/django-uzewiki.git#egg=django-uzewiki
+    pip install -e git+https://github.com/radiac/django-powerwiki.git#egg=django-powerwiki
+
 
 2. Add to ``INSTALLED_APPS``::
 
     INSTALLED_APPS = (
         ...
-        'uzewiki',
+        'powerwiki',
     )
 
 3.  Link to urls.py
 
-    * To install a single wiki change your settings for ``UZEWIKI_SINGLE`` and
-      ``UZEWIKI_SINGLE_NAME``
+    * To install a single wiki change your settings for ``POWERWIKI_SINGLE_MODE`` and
+      ``POWERWIKI_SINGLE_NAME``
     * If you want to use a custom URL structure, remember to check UPGRADES in the
       future for notice of changes to ``urls.py``
     * The front page of the wiki app will always be ``index`` - if you
@@ -62,41 +42,46 @@ Installation
 
     Example::
 
-        url(r'^wiki/', include('uzewiki.urls', namespace='uzewiki')),
+        path('wiki/', include('powerwiki.urls', namespace='powerwiki')),
 
-4. Templates
-  * Expects your site ``base.html`` to have ``title``, ``css`` and ``content``
-    blocks.
+4.  Templates
+
+    * Expects your site ``base.html`` to have ``title``, ``css`` and ``content``
+      blocks.
 
 
-Migrating from other wiki engines
-=================================
+Using powerwiki
+===============
 
-From dokuwiki
+Writing pages
 -------------
 
-* Create a folder on the same machine as your django installation, eg ``~/tmp/mywiki``
-* Copy the ``data/pages`` directory into ``mywiki`` as ``mywiki/pages``
-* Copy the ``data/media`` directory into ``mywiki`` as ``mywiki/assets``
-* Run ``python manage.py convert_wiki dokuwiki <path/to/mywiki>``
-  * This will move ``start.txt`` files to convert from dokuwiki namespaces
-  * It will make a basic attempt to convert from dokuwiki syntax to pretext,
-    using regular expressions. It's pretty simplistic, and will get things
-    wrong (ie it will break a link with a label in a table). It would be nice
-    to think that at some point this would be replaced with a proper dokuwiki
-    parser, but there are no concrete plans to do so at this time.
-* Zip ``mywiki`` as ``mywiki.zip``
-* Create a wiki on your django site and import ``mywiki.zip``
-* Manually fix any issues in the dokuwiki markup
+Powerwiki supports markup engines for writing in different source languages. You can add
+your own engine too if there's another language you would like to support. Set the
+default language with the ``POWERWIKI_MARKUP_ENGINE`` setting, and override it by wiki
+and page.
 
-Notes
-=====
+The engines adds URL schemes ``wiki:`` and ``asset:`` to add explicit links to pages and
+assets. These urls will always be relative to the wiki root.
 
-* To edit a page, add /edit/ to it
-  * Front page is a little different - go to /UZEWIKI_FRONT/edit/
+Relational links to wiki pages will be treated as ``wiki:`` links, but relative to the
+current page rather than wiki root.
+
+Page paths can be arranged in a hierarchy with ``/``, but each slug must start with an
+alphanumeric character.
+
+Examples on a page ``animals/cats``::
+
+    <a href=":path">...</a>
+    <a href="wiki:path">...</a>
 
 
-Credits
-=======
+Inter-wiki links::
 
-Thanks to all contributors, who are listed in CHANGES.
+    <a href=":slug:path">...</a>
+    <a href="wiki:slug:path">...</a>
+
+
+Assets::
+
+    <img src="asset:slug">

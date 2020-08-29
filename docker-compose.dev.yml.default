@@ -1,0 +1,45 @@
+# Configuration for local development
+#
+# See README for setup and usage instructions
+#
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - "../db:/db"
+      - "../backup:/backup"
+      - ".:/project"
+    environment:
+      POSTGRES_DB: powerwiki
+      POSTGRES_USER: powerwiki
+      POSTGRES_PASSWORD: powerwiki
+      PGDATA: /db
+
+  frontend:
+    build:
+      context: ./
+      dockerfile: "./docker/frontend/Dockerfile"
+    environment:
+    - FRONTEND_MODE=watch
+    ports:
+      - "8080:8080"
+    volumes:
+      - ".:/project"
+
+  backend:
+    build:
+      context: ./
+      dockerfile: "./docker/backend/Dockerfile"
+    environment:
+      DJANGO_CONFIGURATION: docker
+      DATABASE_HOST: postgres
+      WEBPACK_DEV_HOST: frontend
+      WEBPACK_DEV_URL: http://{host}:8080/static/
+    ports:
+      - "8000:8000"
+    volumes:
+      - ".:/project"
+    depends_on:
+      - postgres

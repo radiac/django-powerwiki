@@ -1,0 +1,23 @@
+{% extends "powerwiki/base.html" %}
+
+{% block wiki_menu %}
+    {% if show_url %}
+    <ul>
+    <li><a href="{{ show_url }}">Go to wiki</a></li>
+    </ul>
+    {% endif %}
+{% endblock %}
+
+
+{% block wiki_content %}
+
+<form action="." method="POST" enctype="multipart/form-data" class="wiki_form">
+{% csrf_token %}
+
+{{ form.non_field_errors }}
+{{ form.as_p }}
+<p><input type="submit" value="Import"></p>
+
+</form>
+
+{% endblock %}

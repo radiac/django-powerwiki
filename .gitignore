@@ -1,2 +1,16 @@
+# Dev
 *.pyc
-django_uzewiki.egg-info
+__pycache__
+node_modules
+
+# Test
+.coverage*
+htmlcov
+test_media
+
+# Example
+docker-compose.dev.yml
+example/db.sqlite3
+
+# Build
+*.egg-info
