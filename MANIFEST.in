@@ -1,0 +1,5 @@
+include LICENSE
+recursive-include powerwiki/static *
+recursive-include powerwiki/templates *
+recursive-include tests *
+recursive-exclude tests *.pyc
