@@ -42,7 +42,7 @@ def reverse_to_page(view, wiki_slug, page_path=None):
     if not app_settings.SINGLE_MODE:
         kwargs["wiki_slug"] = wiki_slug
     if page_path and not (
-        view == "powerwiki:show" and page_path == app_settings.FRONT_PATH
+        view == "powerwiki:page" and page_path == app_settings.FRONT_PATH
     ):
         kwargs["page_path"] = page_path
     return reverse(view, kwargs=kwargs)

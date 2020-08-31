@@ -46,7 +46,7 @@ urlpatterns = [
         url_dict,
         name="asset-edit",
     ),
-    re_path(fr"^{url_prefix}$", views.page, url_dict, name="show"),
+    re_path(fr"^{url_prefix}$", views.page, url_dict, name="page"),
 ]
 
 if not app_settings.SINGLE_MODE:

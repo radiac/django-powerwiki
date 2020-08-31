@@ -126,7 +126,7 @@ def page_edit(request, wiki, wiki_slug, page_path):
                 form.save()
                 messages.success(request, "Page saved.")
                 return HttpResponseRedirect(
-                    reverse_to_page("powerwiki:show", wiki_slug, page_path)
+                    reverse_to_page("powerwiki:page", wiki_slug, page_path)
                 )
         else:
             messages.error(request, "Error processing form.")
