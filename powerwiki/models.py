@@ -8,13 +8,16 @@ from django.contrib.auth import get_user_model
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.html import mark_safe
-from django.utils.module_loading import import_string
 
 from . import app_settings, constants, utils
+from .markup.loader import engine_field_choices, get_engine, load_engines
 
 
 if "django.contrib.postgres" in settings.INSTALLED_APPS:
     from django.contrib.postgres.search import SearchVector
+
+#  Preload engines
+load_engines()
 
 
 class Wiki(models.Model):
@@ -40,10 +43,7 @@ class Wiki(models.Model):
     markup_engine = models.CharField(
         max_length=255,
         default=app_settings.MARKUP_ENGINE_DEFAULT,
-        choices=[
-            (engine_name, engine_name.rsplit(".", 1)[1])
-            for engine_name in app_settings.MARKUP_ENGINES
-        ],
+        choices=engine_field_choices(),
     )
     users = models.ManyToManyField(
         get_user_model(), through="WikiPermissions", related_name="wikis"
@@ -57,7 +57,7 @@ class Wiki(models.Model):
 
     def get_absolute_url(self):
         return utils.reverse_to_page(
-            "powerwiki:show", self.slug, app_settings.FRONT_PATH
+            "powerwiki:page", self.slug, app_settings.FRONT_PATH
         )
 
     def can_read(self, user):
@@ -180,10 +180,7 @@ class Page(models.Model):
     markup_engine = models.CharField(
         max_length=255,
         default=app_settings.MARKUP_ENGINE_DEFAULT,
-        choices=[
-            (engine_name, engine_name.rsplit(".", 1)[1])
-            for engine_name in app_settings.MARKUP_ENGINES
-        ],
+        choices=engine_field_choices(),
     )
 
     class Meta:
@@ -202,18 +199,8 @@ class Page(models.Model):
     def full_title(self):
         return "%s" % (self.title)
 
-    def get_engine_class(self):
-        engine_name = self.markup_engine
-
-        # Just sanity check to make sure something odd isn't going on
-        if engine_name not in app_settings.MARKUP_ENGINES:
-            raise ValueError(f"Unknown wiki markup engine: {engine_name}")
-
-        engine_class = import_string(engine_name)
-        return engine_class
-
     def render_content(self):
-        engine_class = self.get_engine_class()
+        engine_class = get_engine(self.markup_engine)
         engine = engine_class(wiki=self.wiki, page=self)
         html = engine.render(self.content)
         return mark_safe(html)

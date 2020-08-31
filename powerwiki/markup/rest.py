@@ -4,14 +4,15 @@ from .base import MarkupEngine
 
 
 class RestructuredText(MarkupEngine):
-    docutils_settings = {}
+    label = "reStructuredText"
+    docutils_settings = {
+        "doctitle_xform": False,
+    }
 
     def to_html(self, raw: str) -> str:
         # Convert to HTML
         parts = publish_parts(
-            source=raw,
-            writer_name="html4css1",
-            settings_overrides=self.docutils_settings,
+            source=raw, writer_name="html", settings_overrides=self.docutils_settings,
         )
         html = parts["fragment"]
 

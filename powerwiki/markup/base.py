@@ -1,8 +1,14 @@
-from ..html import process
-from ..models import Page, Wiki
+from __future__ import annotations
+
+import typing
+
+
+if typing.TYPE_CHECKING:
+    from ..models import Page, Wiki
 
 
 class MarkupEngine:
+    label: "Unknown"
     wiki: Wiki
     page: Page
 
@@ -23,5 +29,7 @@ class MarkupEngine:
         raise NotImplementedError()
 
     def post(self, html: str) -> str:
+        from ..html import process
+
         html = process(html, wiki=self.wiki, page=self.page)
         return html
