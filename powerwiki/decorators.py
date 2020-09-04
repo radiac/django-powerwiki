@@ -63,7 +63,7 @@ def read_required(fn):
 
     def wrapper(request, wiki, *args, **kwargs):
         if not wiki.can_read(request.user):
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 raise PermissionDenied
             # Make auth decorator fail to force user to login form
             return user_passes_test(lambda u: False)(lambda r: None)(request)
@@ -79,7 +79,7 @@ def edit_required(fn):
 
     def wrapper(request, wiki, *args, **kwargs):
         if not wiki.can_edit(request.user):
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 raise PermissionDenied
             # Make auth decorator fail to force user to login form
             return user_passes_test(lambda u: False)(lambda r: None)(request)

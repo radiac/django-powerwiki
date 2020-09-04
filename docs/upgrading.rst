@@ -17,6 +17,8 @@ Features:
 Changed:
 
 * Removed support for Django <2.2
+* Updated templates and replaced JS and CSS
+* Added example project
 
 
 0.1.0, 2014-04-25

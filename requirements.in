@@ -17,8 +17,13 @@ pytest-django
 pytest-flake8
 pytest-isort
 pytest-mypy
+tox
 
-# Project
+# Docs
+sphinx
+sphinx-autobuild
+
+# Example project
 django>2.2,<3
 psycopg2-binary
 -e .

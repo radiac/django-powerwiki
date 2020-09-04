@@ -30,15 +30,15 @@ class PowerwikiSettings(AppSettings):
         ("img", "src"),
     ]
 
-    # Default markup engine
-    MARKUP_ENGINE_DEFAULT = "powerwiki.markup.rest.RestructuredText"
-
     # Available markup engines
     MARKUP_ENGINES = [
         "powerwiki.markup.rest.RestructuredText",
         "powerwiki.markup.md.Markdown",
         "powerwiki.markup.plain.PlainText",
     ]
+
+    # Default markup engine
+    MARKUP_ENGINE_DEFAULT = "powerwiki.markup.rest.RestructuredText"
 
     # HTML parser for BeautifulSoup
     HTML_PARSER = "html.parser"
