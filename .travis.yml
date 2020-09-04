@@ -3,14 +3,13 @@ dist: xenial
 language: python
 install:
 - pip install --upgrade pip wheel setuptools
-- pip install virtualenv tox
+- pip install --upgrade virtualenv tox
+- pip install --upgrade -r requirements.txt
 before_script:
 - sh -c "if [ '$DATABASE_ENGINE' = 'pgsql' ]; then psql -c 'DROP DATABASE IF EXISTS
   gdpr_assist_tests;' -U postgres; fi"
 - sh -c "if [ '$DATABASE_ENGINE' = 'pgsql' ]; then psql -c 'create database gdpr_assist_tests;'
   -U postgres; fi"
-- sh -c "if [ '$DATABASE_ENGINE' = 'mysql' ]; then mysql -e 'create database IF NOT
-  EXISTS gdpr_assist_tests'; fi"
 script:
 - tox
 
