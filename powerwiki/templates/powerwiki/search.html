@@ -1,14 +1,9 @@
 {% extends "powerwiki/base.html" %}
 
-{% block js %}
-{{ block.super }}
-{% endblock %}
-
-
 {% block wiki_menu %}
-    <ul class="wiki_menu_options">
+    <ul class="powerwiki__menu_options">
         <li>
-            <form action="{% url "powerwiki:search" wiki_slug=wiki_slug %}" method="GET" class="wiki_form">
+            <form action="{% url "powerwiki:search" wiki_slug=wiki_slug %}" method="GET">
             <input type="text" name="q" placeholder="Search" value="{{ search_query }}">
             <input type="submit" value="Go">
             </form>
@@ -17,11 +12,11 @@
 {% endblock %}
 
 {% block wiki_content %}
-
 <ul>
     {% for page in pages %}
         <li><a href="{{ page.get_absolute_url }}">{{ page.title }}</a></li>
+    {% empty %}
+        <li>No results</li>
     {% endfor %}
 </ul>
-
 {% endblock %}

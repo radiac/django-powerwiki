@@ -2,7 +2,7 @@
 **                                                              Form
 */
 
-.powerwiki_edit {
+.powerwiki__form-edit {
     $input-padding: 10px;
 
     display: flex;
@@ -50,7 +50,7 @@
             padding: 0;
             border: 0;
             background: transparent;
-            text-align:  right;
+            text-align: right;
         }
         textarea {
             width: 100%;
@@ -82,24 +82,4 @@ body.powerwiki_edit {
             }
         }
     }
-}
-
-.wiki_form_header {
-    overflow:   hidden;
-    width:      100%;
-}
-.wiki_form_header .wiki_form_title {
-    margin:     0 6em 0 0;
-}
-.wiki_form_header .wiki_form_save {
-    margin:     0;
-    float:      right;
-}
-.wiki_form_header .wiki_form_save input[type=submit] {
-    padding:        0 0.6em;
-    margin:         0;
-    line-height:    1.5em;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
 }

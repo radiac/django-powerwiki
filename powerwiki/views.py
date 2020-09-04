@@ -19,7 +19,9 @@ def index(request):
             wikis.append(wiki)
 
     return render(
-        request, "powerwiki/index.html", {"title": "Available Wikis", "wikis": wikis,}
+        request,
+        "powerwiki/index.html",
+        {"title": "Available Wikis", "wikis": wikis, "body_class": "powerwiki_index",},
     )
 
 
@@ -63,6 +65,7 @@ def page(request, wiki, wiki_slug, page_path=None):
             "wiki_slug": wiki_slug,
             "breadcrumbs": wiki.gen_breadcrumbs(page_path),
             "edit_url": edit_url,
+            "body_class": "powerwiki_show",
         },
         status=404 if not page else None,
     )
@@ -87,6 +90,7 @@ def search(request, wiki, wiki_slug):
             + [{"title": "Search", "class": "", "url": "",}],
             "search_query": query,
             "pages": pages,
+            "body_class": "powerwiki_search",
         },
     )
 
@@ -151,6 +155,7 @@ def page_edit(request, wiki, wiki_slug, page_path):
             "title": "Edit page: %s" % page_path,
             "breadcrumbs": wiki.gen_breadcrumbs(page_path) + [{"title": "Edit page",}],
             "show_url": reverse_to_page("powerwiki:page", wiki_slug, page_path),
+            "body_class": "powerwiki_edit",
         },
     )
 
@@ -188,6 +193,7 @@ def wiki_import(request, wiki, wiki_slug):
             "form": form,
             "title": "Import wiki: %s" % wiki_slug,
             "show_url": reverse_to_page("powerwiki:page", wiki_slug),
+            "body_class": "powerwiki_import",
         },
     )
 
@@ -267,5 +273,7 @@ def asset_edit(request, wiki, wiki_slug, asset_name):
             "form": form,
             "title": "Edit asset %s" % asset_name,
             "breadcrumbs": breadcrumbs,
+            "body_class": "powerwiki_asset_edit",
         },
     )
+

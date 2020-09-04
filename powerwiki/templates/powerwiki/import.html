@@ -11,12 +11,12 @@
 
 {% block wiki_content %}
 
-<form action="." method="POST" enctype="multipart/form-data" class="wiki_form">
+<form action="." method="POST" enctype="multipart/form-data" class="powerwiki__import_form">
 {% csrf_token %}
 
 {{ form.non_field_errors }}
 {{ form.as_p }}
-<p><input type="submit" value="Import"></p>
+<p class="powerwiki__asset_form-save"><input type="submit" value="Import"></p>
 
 </form>
 

@@ -7,16 +7,30 @@
 
 <head>
   <title>{{ title }}</title>
-    {% block css %}
-      {% if not WEBPACK_DEV_URL %}
-        <link rel="stylesheet" href="{% static "powerwiki/index.css" %}" type="text/css" />
-      {% endif %}
-    {% endblock %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% if not WEBPACK_DEV_URL %}
+    <link rel="stylesheet" href="{% static "powerwiki/index.css" %}" type="text/css" />
+    {% endif %}
+    {% block css %}{% endblock %}
 
     <style>
+        /* Style page to use full height of browser viewport */
         html {
             height: 100%;
         }
+        body.powerwiki_edit {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        body.powerwiki_edit header {
+            flex: 0 0 auto;
+        }
+        body.powerwiki_edit main {
+            flex: 1 0 auto;
+        }
+
+        /* Generic example styling */
         body {
             padding: 0;
             margin: 0;
@@ -48,26 +62,28 @@
             background: #faa;
         }
 
-        /* Style to max height */
-        body.powerwiki_edit {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+        a {
+            color: #008;
+            text-decoration: none;
         }
-        body.powerwiki_edit header {
-            flex: 0 0 auto;
+        a:hover {
+            color: #00f;
+            text-decoration: underline;
         }
-        body.powerwiki_edit main {
-            flex: 1 0 auto;
+        .powerwiki__menu li,
+        .powerwiki__menu a {
+            font-size: 0.8rem;
+            height: 1.8rem;
+            line-height: 1.8rem;
         }
     </style>
 
 </head>
 
-<body class="{% block body_class %}{% endblock %}">
+<body class="{{ body_class }}">
 
 <header>
-    <h1>{% block title %}{{ title }}{% endblock %}</h1>
+    <h1>{{ title }}</h1>
 
     <div id="messages">
         <ul>
@@ -81,8 +97,7 @@
 </header>
 
 <main id="content">
-    {% block content %}
-    {% endblock %}
+    {% block content %}{% endblock %}
 </main>
 
 {% block js %}

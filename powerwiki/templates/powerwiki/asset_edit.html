@@ -2,7 +2,7 @@
 
 {% block wiki_content %}
 
-<form action="." method="POST" class="wiki_form" enctype="multipart/form-data">
+<form action="." method="POST" class="powerwiki__asset_form" enctype="multipart/form-data">
 {% csrf_token %}
 
 {{ form.wiki }}
@@ -14,13 +14,9 @@
     {{ form.image.errors }}
 </p>
 
-<p class="wiki_form_save">
+<p class="powerwiki__asset_form-save">
     <input type="submit" value="Save" />
 </p>
 </form>
-
-<script>
-
-</script>
 
 {% endblock %}

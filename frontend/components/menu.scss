@@ -4,96 +4,47 @@
     .powerwiki__menu {
         display: flex;
         border-bottom: 1px solid #ccc;
-        background: #fff;
         box-sizing: border-box;
         padding: 0 1em;
 
         & > ul {
             flex: 1 1 auto;
+            display: flex;
 
             list-style: none;
-            padding:    0;
-            margin:     0;
+            padding: 0;
+            margin: 0;
 
             li {
-                display:        inline-block;
-                font-size:      0.8em;
-                color:          #666;
-                line-height:    24px;
+                display: inline-block;
 
-                a,
-                input,
-                li:before {
-                    color:              #666;
-                    background-color:   #f8f8f8;
-                    font-weight:        bold;
-                    text-decoration:    none;
-
-                }
                 a,
                 input {
-                    display:    inline-block;
-                    padding:    0 8px;
+                    display: inline-block;
+                    padding: 0 4px;
                 }
-                input:not([type=submit]) {
-                    background-color:   #fff;
-                }
-
-                a:hover,
-                input[type=submit]:hover {
-                    color:      #000;
-                    background-color: #fff;
+                a:hover {
+                    text-decoration: underline;
                 }
             }
 
-            &:last-child  {
+            &.powerwiki__menu_breadcrumbs {
+                li:before {
+                    content: '\00bb';
+                    padding-right: 4px;
+                }
+
+                li:first-child:before {
+                    display: none;
+                }
+            }
+
+            &.powerwiki__menu_options  {
+                flex: 0 0 auto;
                 text-align: right;
             }
         }
     }
-}
-
-
-
-.wiki_menu_breadcrumbs a,
-.wiki_menu_breadcrumbs li:before {
-    padding:    0;
-    display:    inline-block;
-    background-color:   transparent;
-    font-weight:        normal;
-}
-.wiki_menu_breadcrumbs a {
-    text-decoration:    underline;
-}
-
-.wiki_menu_breadcrumbs li:before {
-    content:    '\00bb';
-    padding-right: 0.3em;
-}
-.wiki_menu_breadcrumbs li:first-child:before {
-    display:    none;
-}
-
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-**                                                              Options menu
-*/
-
-.wiki_menu ul.wiki_menu_options {
-    float:      right;
-}
-
-.wiki_menu ul.wiki_menu_options li {
-    margin-left:    1em;
-}
-.wiki_menu ul.wiki_menu_options a,
-.wiki_menu ul.wiki_menu_options input,
-.wiki_menu ul.wiki_menu_options li:before {
-    height:     24px;
-    line-height:    24px;
-    margin:     0;
-    border:     1px solid #ccc;
 }
 
 
@@ -103,12 +54,9 @@
 */
 
 @media all and (max-width:640px) {
-    .wiki_menu ul,
-    .wiki_menu ul.wiki_menu_options {
-        float:      none;
-        margin-left:    0;
-    }
-    .wiki_menu ul.wiki_menu_options li:first-child {
-        margin-left:   0;
+    .powerwiki__container {
+        .powerwiki__menu {
+            flex-direction: column-reverse;
+        }
     }
 }

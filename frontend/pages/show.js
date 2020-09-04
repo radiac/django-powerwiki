@@ -1,21 +1,16 @@
 /*
-** JavaScript for Powerwiki show
+** JavaScript for Powerwiki show page
 */
 
-$('document').ready(function () {
-  // Detect DOM elements
-  var $window = $(window),
-    $edit = $('a#powerwiki_edit')
-    ;
+import { addCtrlKeyListener } from "../lib/keys.js";
 
-  // Save shortcut
-  $(window).keypress(function (e) {
-    if (!(e.which == 101 && e.ctrlKey) && !(e.which == 19)) {
-      return true;
-    }
-    e.preventDefault();
-    document.location = $edit.attr('href');
-    return false;
+export const setup = () => {
+  const formShowEdit = document.getElementById('powerwiki__page__edit');
+  if (!formShowEdit) {
+    return;
+  }
+
+  addCtrlKeyListener('e', e => {
+    formShowEdit.click()
   });
-});
-
+};
