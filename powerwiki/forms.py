@@ -18,7 +18,7 @@ class PageForm(forms.ModelForm):
             "wiki": forms.HiddenInput(),
             "path": forms.HiddenInput(),
             "title": forms.TextInput(
-                attrs={"placeholder": "Title", "autocomplete": "off",}
+                attrs={"placeholder": "Title", "autocomplete": "off"}
             ),
             "content": forms.Textarea(),
         }

@@ -29,7 +29,7 @@ re_valid_page_path = re.compile(fr"^{PAGE_PATH_PATTERN}$")
 re_valid_asset_name = re.compile(fr"^{ASSET_NAME_PATTERN}$")
 
 
-@lru_cache
+@lru_cache()
 def get_wiki_root():
     return reverse("powerwiki:index")
 

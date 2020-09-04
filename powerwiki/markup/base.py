@@ -8,9 +8,9 @@ if typing.TYPE_CHECKING:
 
 
 class MarkupEngine:
-    label: "Unknown"
     wiki: Wiki
     page: Page
+    label: str = "Unknown"
 
     def __init__(self, wiki: Wiki, page: Page):
         self.wiki = wiki

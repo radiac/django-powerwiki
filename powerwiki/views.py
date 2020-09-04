@@ -21,7 +21,7 @@ def index(request):
     return render(
         request,
         "powerwiki/index.html",
-        {"title": "Available Wikis", "wikis": wikis, "body_class": "powerwiki_index",},
+        {"title": "Available Wikis", "wikis": wikis, "body_class": "powerwiki_index"},
     )
 
 
@@ -87,7 +87,7 @@ def search(request, wiki, wiki_slug):
             "title": "Search",
             "wiki_slug": wiki_slug,
             "breadcrumbs": wiki.gen_breadcrumbs(app_settings.FRONT_PATH)
-            + [{"title": "Search", "class": "", "url": "",}],
+            + [{"title": "Search", "class": "", "url": ""}],
             "search_query": query,
             "pages": pages,
             "body_class": "powerwiki_search",
@@ -153,7 +153,7 @@ def page_edit(request, wiki, wiki_slug, page_path):
         {
             "form": form,
             "title": "Edit page: %s" % page_path,
-            "breadcrumbs": wiki.gen_breadcrumbs(page_path) + [{"title": "Edit page",}],
+            "breadcrumbs": wiki.gen_breadcrumbs(page_path) + [{"title": "Edit page"}],
             "show_url": reverse_to_page("powerwiki:page", wiki_slug, page_path),
             "body_class": "powerwiki_edit",
         },
@@ -263,8 +263,8 @@ def asset_edit(request, wiki, wiki_slug, asset_name):
 
     breadcrumbs = wiki.gen_breadcrumbs()
     if asset:
-        breadcrumbs += [{"title": "Asset", "url": asset.get_absolute_url(),}]
-    breadcrumbs += [{"title": "Edit asset",}]
+        breadcrumbs += [{"title": "Asset", "url": asset.get_absolute_url()}]
+    breadcrumbs += [{"title": "Edit asset"}]
 
     return render(
         request,
@@ -276,4 +276,3 @@ def asset_edit(request, wiki, wiki_slug, asset_name):
             "body_class": "powerwiki_asset_edit",
         },
     )
-

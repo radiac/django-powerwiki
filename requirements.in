@@ -23,7 +23,8 @@ tox
 sphinx
 sphinx-autobuild
 
-# Example project
-django>2.2,<3
-psycopg2-binary
--e .
+# Project (setup.cfg)
+django-yaa-settings
+beautifulsoup4
+docutils
+markdown

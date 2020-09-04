@@ -4,7 +4,6 @@ language: python
 install:
 - pip install --upgrade pip wheel setuptools
 - pip install --upgrade virtualenv tox
-- pip install --upgrade -r requirements.txt
 before_script:
 - sh -c "if [ '$DATABASE_ENGINE' = 'pgsql' ]; then psql -c 'DROP DATABASE IF EXISTS
   gdpr_assist_tests;' -U postgres; fi"
