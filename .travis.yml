@@ -1,0 +1,45 @@
+os: linux
+dist: xenial
+language: python
+install:
+- pip install --upgrade pip wheel setuptools
+- pip install virtualenv tox
+before_script:
+- sh -c "if [ '$DATABASE_ENGINE' = 'pgsql' ]; then psql -c 'DROP DATABASE IF EXISTS
+  gdpr_assist_tests;' -U postgres; fi"
+- sh -c "if [ '$DATABASE_ENGINE' = 'pgsql' ]; then psql -c 'create database gdpr_assist_tests;'
+  -U postgres; fi"
+- sh -c "if [ '$DATABASE_ENGINE' = 'mysql' ]; then mysql -e 'create database IF NOT
+  EXISTS gdpr_assist_tests'; fi"
+script:
+- tox
+
+jobs:
+  include:
+
+  - python: '3.7'
+    env: TOXENV=py37-django2.2
+  - python: '3.7'
+    env: TOXENV=py37-django3.0
+  - python: '3.7'
+    env: TOXENV=py37-django3.1
+
+  - python: '3.8'
+    env: TOXENV=py38-django2.2 DEPLOY=true
+  - python: '3.8'
+    env: TOXENV=py38-django2.2 DATABASE_ENGINE=mysql DATABASE_USER=travis
+    services:
+      - mysql
+  - python: '3.8'
+    env: TOXENV=py38-django2.2 DATABASE_ENGINE=pgsql DATABASE_USER=postgres
+    services:
+      - postgresql
+  - python: '3.8'
+    env: TOXENV=py38-django3.0
+  - python: '3.8'
+
+    env: TOXENV=py38-django3.1
+  - python: '3.8'
+    env: TOXENV=py38-django3.1 DATABASE_ENGINE=pgsql DATABASE_USER=postgres
+    services:
+      - postgresql

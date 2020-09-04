@@ -14,4 +14,6 @@ example/db.sqlite3
 
 # Build
 *.egg-info
+build
+dist
 docs/_build
