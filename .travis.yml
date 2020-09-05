@@ -23,7 +23,7 @@ jobs:
     env: TOXENV=py37-django3.1
 
   - python: '3.8'
-    env: TOXENV=py38-django2.2 DEPLOY=true
+    env: TOXENV=py38-django2.2
   - python: '3.8'
     env: TOXENV=py38-django2.2 DATABASE_ENGINE=mysql DATABASE_USER=travis
     services:

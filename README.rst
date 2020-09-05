@@ -4,6 +4,15 @@ Django Powerwiki - Run multiple wikis in Django
 
 A work in progress wiki system for Django 2.2+
 
+* Project site: http://radiac.net/projects/django-powerwiki/
+* Source code: https://github.com/radiac/django-powerwiki
+
+.. image:: https://travis-ci.org/radiac/django-powerwiki.svg?branch=master
+    :target: https://travis-ci.org/radiac/django-powerwiki
+
+.. image:: https://coveralls.io/repos/radiac/django-powerwiki/badge.svg?branch=master&service=github
+    :target: https://coveralls.io/github/radiac/django-powerwiki?branch=master
+
 
 Features
 ========
