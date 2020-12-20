@@ -5,6 +5,14 @@ Powerwiki Changes
 Changelog
 =========
 
+0.2.2, 2020-12-20
+-----------------
+
+Bugfix:
+
+* Correct index template
+
+
 0.2.1, 2020-09-05
 -----------------
 
