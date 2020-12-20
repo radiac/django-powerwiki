@@ -1,13 +1,16 @@
 {% extends "powerwiki/base.html" %}
 
-{% block content %}
-    {% if wikis %}
-        <dl class="table">
-        {% for wiki in wikis %}
-            <dt><a href="{{ wiki.get_absolute_url }}">{{ wiki.title }}</a></dt>
-            <dd>{{ wiki.description|default:"&nbsp;" }}</dd>
-        {% endfor %}
-    {% else %}
-        <p>There are no wikis available.</p>
-    {% endif %}
+{% block wiki_content %}
+  {% if wikis %}
+    <table>
+    {% for wiki in wikis %}
+      <tr>
+        <td><a href="{{ wiki.get_absolute_url }}">{{ wiki.title }}</a></td>
+        <td>{{ wiki.description|default:"&nbsp;" }}</td>
+      </tr>
+    {% endfor %}
+    </table>
+  {% else %}
+    <p>There are no wikis available.</p>
+  {% endif %}
 {% endblock %}
