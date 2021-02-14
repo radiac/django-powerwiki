@@ -166,3 +166,16 @@ The base template should also render messages from Django's messaging framework,
     {% for message in messages %}
     <p>{{ message|safe }}</p>
     {% endfor %}
+
+
+Styles
+======
+
+The included stylesheet is largely unopinionated. It will attempt to create full-height
+elements, so the ``content`` block should be styled to use as much width and height of
+the viewport as is possible within your design, eg with ``min-height: 100%`` or vertical
+flexbox. See the example project for details.
+
+There are some values you may want to override to fit with your design, such as
+``.powerwiki__content`` padding, or ``.powerwiki__content a[data-missing=True]`` style -
+see stylesheets for details.

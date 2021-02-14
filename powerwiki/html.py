@@ -158,8 +158,9 @@ def process(html: str, wiki: Wiki, page: Page):
     """
     soup = BeautifulSoup(html, features=app_settings.HTML_PARSER)
 
-    # Build lookup table for asset tags
+    # Build lookup tables for tags
     #   found[wiki][path] = [tag, tag, tag ...]
+    page_tags = defaultdict(lambda: defaultdict(list))
     asset_tags = defaultdict(lambda: defaultdict(list))
 
     for tag_name, attr in app_settings.LINK_TAGS:
@@ -169,21 +170,42 @@ def process(html: str, wiki: Wiki, page: Page):
             if wiki_url is None:
                 continue
 
+            # We need to look up the pages and assets
+            # Defer so we can do the lookup in one go
             scheme, wiki_slug, page_slug = wiki_url
             if scheme == SCHEME_WIKI:
                 # We don't need to know anything concrete about a link yet, fake it
-                obj = Page(wiki=Wiki(slug=wiki_slug), path=page_slug)
-                tag[attr] = obj.get_absolute_url()
+                page_tags[wiki_slug][page_slug].append((tag, attr))
 
             elif scheme == SCHEME_ASSET:
-                # We need to look up the assets to get the media urls
-                # Defer so we can do the lookup in one go
                 asset_tags[wiki_slug][page_slug].append((tag, attr))
 
             else:
                 continue
 
             tag["class"] = f"{tag.get('class', '')} powerwiki__{scheme}".strip()
+
+    # Look up and replace pages
+    for wiki_slug, paths in page_tags.items():
+        fake_wiki = Wiki(slug=wiki_slug)
+
+        # Lookup pages for this wiki
+
+        pages = Page.objects.filter(wiki__slug=wiki_slug, path__in=paths.keys())
+        path_to_page = {page.path: page for page in pages}
+
+        # Loop over paths
+        for path, tags in paths.items():
+            if path in path_to_page:
+                page = path_to_page[path]
+            else:
+                page = Page(wiki=fake_wiki, path=page_slug)
+
+            for tag, attr in tags:
+                tag[attr] = page.get_absolute_url()
+                tag["data-edit"] = page.get_edit_url()
+                if not page.pk:
+                    tag["data-missing"] = True
 
     # Look up and replace assets
     for wiki_slug, paths in asset_tags.items():
@@ -206,5 +228,7 @@ def process(html: str, wiki: Wiki, page: Page):
             for tag, attr in tags:
                 tag[attr] = media_url
                 tag["data-edit"] = edit_url
+                if not asset.pk:
+                    tag["data-missing"] = True
 
     return str(soup)
