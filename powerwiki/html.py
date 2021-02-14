@@ -197,10 +197,11 @@ def process(html: str, wiki: Wiki, page: Page):
         for path, tags in paths.items():
             if path in name_to_asset:
                 asset = name_to_asset[path]
+                media_url = asset.get_media_url()
             else:
                 asset = Asset(wiki=fake_wiki, name=path)
+                media_url = ""
 
-            media_url = asset.get_media_url()
             edit_url = asset.get_edit_url()
             for tag, attr in tags:
                 tag[attr] = media_url
