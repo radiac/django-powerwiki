@@ -34,3 +34,25 @@ Inter-wiki links::
 Assets::
 
     <img src="asset:slug">
+
+
+reStructuredText
+----------------
+
+Normally reStructuredText slugifies links by stripping whitespace, for example::
+
+    `Using Powerwiki`_
+    # becomes
+    <a href="usingpowerwiki">UsingPowerwiki</a>
+
+Powerwiki prefers to slugify using dashes, so adds two custom roles to the rst parser::
+
+    :wiki:`Using Powerwiki'_
+    # becomes
+    <a href="using-powerwiki">Using Powerwiki</a>
+
+and for assets::
+
+    :asset:`Using Powerwiki'_
+    # becomes
+    <a href="asset:using-powerwiki">Using Powerwiki</a>
