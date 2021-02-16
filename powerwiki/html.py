@@ -7,6 +7,7 @@ from functools import lru_cache
 from typing import Optional, Tuple
 from urllib.parse import urljoin, urlparse
 
+from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.template.defaultfilters import slugify
 from django.urls import reverse
@@ -18,8 +19,13 @@ from .constants import (
     ASSET_NAME_PATTERN,
     PAGE_PATH_PATTERN,
     SCHEME_ASSET,
+    SCHEME_IMAGE,
     SCHEME_WIKI,
     WIKI_SLUG_PATTERN,
+    WIKILINK_CLOSE,
+    WIKILINK_LABEL_SEPARATOR,
+    WIKILINK_OPEN,
+    WIKILINK_SCHEME_SEPARATOR,
 )
 from .models import Asset, Page, Wiki
 
@@ -152,11 +158,73 @@ def clean(html: str, wiki: Wiki, page: Page):
             parse_url(tag[attr], wiki, page)
 
 
-def process(html: str, wiki: Wiki, page: Page):
+def process(html: str, wiki: Wiki, page: Page, user: AbstractUser):
     """
     Convert wiki links into relative paths
     """
     soup = BeautifulSoup(html, features=app_settings.HTML_PARSER)
+
+    # Convert wiki format links [[page|label]]
+    for text in soup.findAll(text=True):
+        ptr = 0
+        replacement = BeautifulSoup(features=app_settings.HTML_PARSER)
+        while ptr > -1:
+            # Find next wikilink
+            match_open = text.find(WIKILINK_OPEN, ptr)
+            if match_open == -1:
+                break
+            match_close = text.find(WIKILINK_CLOSE, match_open)
+            if match_close == -1:
+                break
+
+            # Capture text before tag open, and advance ptr to end of area of interest
+            if ptr != match_open:
+                replacement.append(text[ptr:match_open])
+            ptr = match_close + len(WIKILINK_CLOSE)
+
+            # Detect scheme
+            path = text[match_open + len(WIKILINK_OPEN) : match_close]
+            if WIKILINK_SCHEME_SEPARATOR in path:
+                scheme, path = path.split(WIKILINK_SCHEME_SEPARATOR, 1)
+            else:
+                scheme = SCHEME_WIKI
+
+            # Detect label
+            if WIKILINK_LABEL_SEPARATOR in path:
+                path, label = path.split(WIKILINK_LABEL_SEPARATOR, 1)
+            else:
+                label = ""
+
+            # Image scheme can't have a label
+            if scheme == SCHEME_IMAGE and label:
+                # Invalid tag, skip
+                continue
+
+            # Build replacement tag
+            if scheme == SCHEME_IMAGE:
+                replacement.append(soup.new_tag("img", src=f"{SCHEME_ASSET}:{path}"))
+            else:
+                link = soup.new_tag("a", href=f"{scheme}:{path}")
+                link.string = label
+                replacement.append(link)
+
+            # Restart loop to look for next tag
+
+        # Capture anything at the end of the string
+        if ptr < len(text):
+            replacement.append(text[ptr:])
+
+        # TODO: Might be worth performance testing the above against 3 regexps:
+        """
+        replaced = re_wiki_link.sub(
+            lambda match: '<a href="{path}">{label}</a>'.format(
+                path=match.group("path"),
+                label=match.group("label") or match.group("path"),
+            ),
+            text,
+        )
+        """
+        text.replaceWith(replacement)
 
     # Build lookup tables for tags
     #   found[wiki][path] = [tag, tag, tag ...]
@@ -185,27 +253,39 @@ def process(html: str, wiki: Wiki, page: Page):
 
             tag["class"] = f"{tag.get('class', '')} powerwiki__{scheme}".strip()
 
+    # Look up wikis and check permissions
+    wiki_slugs = list(page_tags.keys()) + list(asset_tags.keys())
+    wikis = Wiki.objects.filter(slug__in=wiki_slugs)
+    available_wikis = [wiki.slug for wiki in wikis if wiki.can_read(user)]
+
     # Look up and replace pages
     for wiki_slug, paths in page_tags.items():
-        fake_wiki = Wiki(slug=wiki_slug)
+        if wiki_slug in available_wikis:
+            # Lookup pages for this wiki
+            pages = Page.objects.filter(wiki__slug=wiki_slug, path__in=paths.keys())
+        else:
+            pages = []
 
-        # Lookup pages for this wiki
-
-        pages = Page.objects.filter(wiki__slug=wiki_slug, path__in=paths.keys())
         path_to_page = {page.path: page for page in pages}
+        fake_wiki = Wiki(slug=wiki_slug)
 
         # Loop over paths
         for path, tags in paths.items():
-            if path in path_to_page:
-                page = path_to_page[path]
-            else:
-                page = Page(wiki=fake_wiki, path=page_slug)
+            page = path_to_page.get(path)
+            if not page:
+                page = Page(wiki=fake_wiki, path=path)
 
             for tag, attr in tags:
                 tag[attr] = page.get_absolute_url()
                 tag["data-edit"] = page.get_edit_url()
                 if not page.pk:
                     tag["data-missing"] = True
+
+                if tag.string == "" and tag.name in app_settings.LINK_TAG_CONTAINERS:
+                    if page.pk:
+                        tag.string = page.title
+                    else:
+                        tag.string = path
 
     # Look up and replace assets
     for wiki_slug, paths in asset_tags.items():

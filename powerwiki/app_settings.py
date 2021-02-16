@@ -24,11 +24,18 @@ class PowerwikiSettings(AppSettings):
         return (value or "index").lower()
 
     # Tags to check for wiki links
-    # List of (tag, attribute) pairs
+    # List of (tag, attr) tuples
+    #   tag     Name of HTML tag
+    #   attr    Field which contains the wiki link
     LINK_TAGS = [
         ("a", "href"),
         ("img", "src"),
     ]
+
+    # List of LINK_TAGS tags which should have their contents if blank
+    # If the target path exists in the database, the title will be used
+    # If it doesn't, it will use the path
+    LINK_TAG_CONTAINERS = ["a"]
 
     # Available markup engines
     MARKUP_ENGINES = [

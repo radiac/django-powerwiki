@@ -5,6 +5,7 @@ import os
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.html import mark_safe
@@ -199,10 +200,10 @@ class Page(models.Model):
     def full_title(self):
         return "%s" % (self.title)
 
-    def render_content(self):
+    def render_content(self, user: AbstractUser = None):
         engine_class = get_engine(self.markup_engine)
         engine = engine_class(wiki=self.wiki, page=self)
-        html = engine.render(self.content)
+        html = engine.render(self.content, user=user)
         return mark_safe(html)
 
 

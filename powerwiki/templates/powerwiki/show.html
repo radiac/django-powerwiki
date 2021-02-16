@@ -1,5 +1,5 @@
 {% extends "powerwiki/base.html" %}
-
+{% load powerwiki %}
 
 {% block wiki_menu %}
     <ul class="powerwiki__menu_options">
@@ -18,7 +18,7 @@
 {% block wiki_content %}
 <div class="powerwiki__page">
     {% if page %}
-        {{ page.render_content }}
+        {% render_wiki page %}
     {% else %}
         <p>This page does not exist yet.</p>
         {% if edit_url %}

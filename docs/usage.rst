@@ -3,12 +3,39 @@ Using Powerwiki
 ===============
 
 Writing pages
--------------
+=============
 
 Powerwiki supports markup engines for writing in different source languages. You can add
 your own engine too if there's another language you would like to support. Set the
 default language with the ``POWERWIKI_MARKUP_ENGINE`` setting, and override it by wiki
 and page.
+
+
+Wiki syntax links
+-----------------
+
+The easiest way to link to pages and assets is using the custom wiki syntax. This is
+available in all markup engines.
+
+To link to a page::
+
+    [[path]]
+    [[wiki:path]]
+    [[wiki:slug:path]]
+
+
+To link to an asset::
+
+    [[asset:path]]
+
+
+To insert an asset as an image::
+
+    [[image:path]]
+
+
+Native links
+------------
 
 The engines adds URL schemes ``wiki:`` and ``asset:`` to add explicit links to pages and
 assets. These urls will always be relative to the wiki root.

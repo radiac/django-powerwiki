@@ -1,3 +1,5 @@
+from django.contrib.auth.models import AbstractUser
+
 from docutils import nodes, utils
 from docutils.core import publish_parts
 from docutils.parsers.rst.roles import _roles, set_implicit_options
@@ -55,7 +57,7 @@ class RestructuredText(MarkupEngine):
         "doctitle_xform": False,
     }
 
-    def to_html(self, raw: str) -> str:
+    def to_html(self, raw: str, user: AbstractUser) -> str:
         # Prepare docutils for custom roles
         with TmpRole("wiki", role_link_wiki), TmpRole("asset", role_link_asset):
             # Convert to HTML

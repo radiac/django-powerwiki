@@ -5,6 +5,24 @@ Powerwiki Changes
 Changelog
 =========
 
+0.3.0, TBC
+-----------------
+
+Features:
+
+* Add post-engine processing for [[..]] wiki links
+* reStructuredText markup engine now supports ``:wiki:`` and ``:asset:`` roles for
+  slugification consistent with the rest of Powerwiki
+* Missing pages and assets are styled differently
+
+
+Bugfix:
+
+* Emptying a page's contents will delete it
+* Cross-wiki linking no longer leaks page paths
+* Missing assets no longer cause errors
+
+
 0.2.2, 2020-12-20
 -----------------
 
