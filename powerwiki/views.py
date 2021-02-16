@@ -126,6 +126,12 @@ def page_edit(request, wiki, wiki_slug, page_path):
                 # Don't worry about being helpful - this is a deliberate
                 # attempt to subvert the authentication system
                 messages.error(request, "Trying to save to invalid wiki.")
+            elif not form.cleaned_data["content"].strip():
+                page.delete()
+                messages.success(request, "Page deleted.")
+                return HttpResponseRedirect(
+                    reverse_to_page("powerwiki:page", wiki_slug)
+                )
             else:
                 form.save()
                 messages.success(request, "Page saved.")
