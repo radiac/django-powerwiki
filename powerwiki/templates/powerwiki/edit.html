@@ -20,11 +20,11 @@
 
     <div class="powerwiki__form-edit__title">
         {{ form.title }}
+        {{ form.markup_engine }}
         <input type="submit" value="Save" id="powerwiki__form-edit__save"/>
     </div>
     {{ form.title.errors }}
     <div class="powerwiki__form-edit__content">
-        {{ form.markup_engine }}
         {{ form.content }}
         {{ form.content.errors }}
     </div>

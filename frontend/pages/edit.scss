@@ -10,6 +10,7 @@
 
     input,
     textarea,
+    .CodeMirror,
     span.helptext {
         display: block;
         box-sizing: border-box;
@@ -22,13 +23,22 @@
         input[type="text"] {
             flex: 1 1 auto;
             padding: 0 $input-padding;
+            min-width: 50%;
         }
-        input[type="submit"] {
+        input[type="submit"],
+        select[name="markup_engine"]
+        {
             flex: 0 1 auto;
+            max-width: 25%;
         }
+
         input[type="text"],
         input[type="submit"] {
             font-size: 1.2rem;
+        }
+
+        input[type="text"]:focus + select[name="markup_engine"] {
+          display: none;
         }
     }
 
@@ -38,25 +48,28 @@
         font-size: 0.8em;
     }
 
+    select[name="markup_engine"] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      font-size: 0.7rem;
+      padding: 0 0.5rem;
+      border: 0;
+      background: transparent;
+      text-align: right;
+      text-overflow: ellipsis;
+    }
+
+    textarea[name="content"] {
+        width: 100%;
+        font-family: monospace;
+        padding: 1.2rem $input-padding;
+    }
+
     &__content {
         flex: 1 1 auto;
         position: relative;
-
-        select {
-            position: absolute;
-            top: 0;
-            right: 0;
-            font-size: 0.7rem;
-            padding: 0;
-            border: 0;
-            background: transparent;
-            text-align: right;
-        }
-        textarea {
-            width: 100%;
-            font-family: monospace;
-            padding: 1.2rem $input-padding;
-        }
+        height: 1vh;
     }
 }
 
@@ -75,7 +88,8 @@ body.powerwiki_edit {
             flex: 1 1 auto;
 
             form,
-            textarea {
+            textarea,
+            .CodeMirror {
                 box-sizing: border-box;
                 height: 100%;
                 margin: 0;

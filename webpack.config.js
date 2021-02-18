@@ -29,7 +29,7 @@ const moduleRuleOptimiseImages = {
 
 // Style building rule
 const moduleRuleScss = {
-  test: /\.scss$/u,
+  test: /\.s?css$/u,
   use: [
     // MiniCssExtractPlugin doesn't support HMR, so will replace style-loader
     // in production

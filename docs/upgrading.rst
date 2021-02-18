@@ -10,6 +10,7 @@ Changelog
 
 Features:
 
+* Add CodeMirror v5
 * Add post-engine processing for [[..]] wiki links
 * reStructuredText markup engine now supports ``:wiki:`` and ``:asset:`` roles for
   slugification consistent with the rest of Powerwiki
