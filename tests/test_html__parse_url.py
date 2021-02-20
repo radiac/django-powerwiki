@@ -65,14 +65,14 @@ def test_parse_url__asset_scheme_with_invalid_wiki_slug__validation_fails(wiki, 
 
 
 def test_parse_url__wiki_scheme_with_invalid_path__validation_fails(wiki, page):
-    url = "wiki:slug:invalid#fail"
+    url = "wiki:slug:#fail"
     with pytest.raises(ValidationError) as excinfo:
         parse_url(url, wiki, page)
     assert excinfo.value.message == f"Wiki link {url} has an invalid page path"
 
 
 def test_parse_url__asset_scheme_with_invalid_name__validation_fails(wiki, page):
-    url = "asset:slug:invalid#fail"
+    url = "asset:slug:#fail"
     with pytest.raises(ValidationError) as excinfo:
         parse_url(url, wiki, page)
     assert excinfo.value.message == f"Asset link {url} has an invalid asset name"
