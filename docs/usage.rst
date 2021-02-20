@@ -43,8 +43,12 @@ assets. These urls will always be relative to the wiki root.
 Relational links to wiki pages will be treated as ``wiki:`` links, but relative to the
 current page rather than wiki root.
 
+Wiki slugs must start with an alphanumeric character and can only contain letters,
+numbers and dashes.
+
 Page paths can be arranged in a hierarchy with ``/``, but each slug must start with an
-alphanumeric character.
+alphanumeric character. Asset names must also start with an alphanumeric character. Page
+paths and asset names have no other restrictions.
 
 Examples on a page ``animals/cats``::
 
@@ -60,7 +64,7 @@ Inter-wiki links::
 
 Assets::
 
-    <img src="asset:slug">
+    <img src="asset:name">
 
 
 reStructuredText

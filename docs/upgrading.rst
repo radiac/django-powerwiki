@@ -5,6 +5,14 @@ Powerwiki Changes
 Changelog
 =========
 
+0.3.1, 2021-02-20
+-----------------
+
+Bugfix:
+
+* Relax path and asset validation rules
+
+
 0.3.0, 2021-02-20
 -----------------
 
