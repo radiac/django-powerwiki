@@ -5,7 +5,7 @@ Powerwiki Changes
 Changelog
 =========
 
-0.3.0, TBC
+0.3.0, 2021-02-20
 -----------------
 
 Features:
@@ -15,6 +15,11 @@ Features:
 * reStructuredText markup engine now supports ``:wiki:`` and ``:asset:`` roles for
   slugification consistent with the rest of Powerwiki
 * Missing pages and assets are styled differently
+
+
+Changes:
+
+* Removed support for Python <3.7
 
 
 Bugfix:
