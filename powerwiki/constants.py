@@ -21,8 +21,8 @@ SCHEME_IMAGE = "image"
 
 # URL patterns
 WIKI_SLUG_PATTERN = r"[a-zA-Z0-9][-\w]*"
-PAGE_PATH_PATTERN = r"[a-zA-Z0-9][-\w]*(/[a-zA-Z0-9][-\w]*)*"
-ASSET_NAME_PATTERN = r"[a-zA-Z0-9][-\w]*"
+PAGE_PATH_PATTERN = r"[a-zA-Z0-9].*?(/[a-zA-Z0-9][- \w]*)*"
+ASSET_NAME_PATTERN = r"[a-zA-Z0-9].*?"
 
 # Wikilink tags
 WIKILINK_OPEN = "[["
