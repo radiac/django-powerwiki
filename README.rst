@@ -10,8 +10,8 @@ A work in progress wiki system for Django 2.2+ on Python 3.7+.
 .. image:: https://travis-ci.org/radiac/django-powerwiki.svg?branch=master
     :target: https://travis-ci.org/radiac/django-powerwiki
 
-.. image:: https://coveralls.io/repos/radiac/django-powerwiki/badge.svg?branch=master&service=github
-    :target: https://coveralls.io/github/radiac/django-powerwiki?branch=master
+.. image:: https://codecov.io/gh/radiac/django-powerwiki/branch/develop/graph/badge.svg?token=5VZNPABZ7E
+    :target: https://codecov.io/gh/radiac/django-powerwiki
 
 
 Features
