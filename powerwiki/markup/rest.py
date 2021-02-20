@@ -3,12 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from docutils import nodes, utils
 from docutils.core import publish_parts
 from docutils.parsers.rst.roles import _roles, set_implicit_options
-from docutils.readers.standalone import Reader
-from docutils.transforms.references import (
-    IndirectHyperlinks,
-    InternalTargets,
-    Transform,
-)
 
 from ..utils import wikipathify
 from .base import MarkupEngine
