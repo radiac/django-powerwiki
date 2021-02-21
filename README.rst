@@ -7,8 +7,8 @@ A work in progress wiki system for Django 2.2+ on Python 3.7+.
 * Project site: http://radiac.net/projects/django-powerwiki/
 * Source code: https://github.com/radiac/django-powerwiki
 
-.. image:: https://travis-ci.org/radiac/django-powerwiki.svg?branch=master
-    :target: https://travis-ci.org/radiac/django-powerwiki
+.. image:: https://github.com/radiac/django-powerwiki/actions/workflows/ci.yml/badge.svg
+    :target: https://github.com/radiac/django-powerwiki/actions/workflows/ci.yml
 
 .. image:: https://codecov.io/gh/radiac/django-powerwiki/branch/develop/graph/badge.svg?token=5VZNPABZ7E
     :target: https://codecov.io/gh/radiac/django-powerwiki
