@@ -40,7 +40,7 @@ coverage[toml]==7.2.5
     # via pytest-cov
 distlib==0.3.6
     # via virtualenv
-django==4.2
+django==3.2
     # via model-bakery
 django-yaa-settings==1.1.0
     # via -r requirements.in

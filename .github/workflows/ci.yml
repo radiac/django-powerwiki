@@ -11,18 +11,15 @@ jobs:
     strategy:
       matrix:
         include:
-          # Django LTS on Python oldest to latest - dj2.2, py3.7-3.9
+          # Django LTS on Python oldest to latest - dj2.2, py3.7
           - python: 3.7
             django: 2.2
-          - python: 3.8
-            django: 2.2
+          # Django supported on LTS - dj3.2, py3.9
           - python: 3.9
-            django: 2.2
-          # Django supported on Python latest - dj3.0-3.1, py3.9
-          - python: 3.9
-            django: 3.0
-          - python: 3.9
-            django: 3.1
+            django: 3.2
+          # Django supported on latest - dj4.2, py3.11
+          - python: 3.11
+            django: 4.2
 
     steps:
       - uses: actions/checkout@v2
