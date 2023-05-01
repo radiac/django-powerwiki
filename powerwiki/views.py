@@ -77,8 +77,22 @@ def search(request, wiki, wiki_slug):
     """
     Search a wiki
     """
-    query = request.GET.get("q", "").strip()
-    pages = wiki.search(query)
+    get_data = request.GET.copy()
+    if "wikis" not in get_data:
+        get_data["wikis"] = wiki.pk
+
+    form = forms.SearchForm(
+        get_data,
+        available_wikis=models.Wiki.objects.can_read(request.user),
+    )
+
+    if form.is_valid():
+        query = form.cleaned_data["q"]
+        wikis = form.cleaned_data["wikis"]
+        pages = models.Page.objects.filter(wiki__in=wikis).search(query)
+    else:
+        pages = []
+        query = ""
 
     return render(
         request,
@@ -86,8 +100,11 @@ def search(request, wiki, wiki_slug):
         {
             "title": "Search",
             "wiki_slug": wiki_slug,
-            "breadcrumbs": wiki.gen_breadcrumbs(app_settings.FRONT_PATH)
-            + [{"title": "Search", "class": "", "url": ""}],
+            "breadcrumbs": (
+                wiki.gen_breadcrumbs(app_settings.FRONT_PATH)
+                + [{"title": "Search", "class": "", "url": ""}]
+            ),
+            "search_form": form,
             "search_query": query,
             "pages": pages,
             "body_class": "powerwiki_search",

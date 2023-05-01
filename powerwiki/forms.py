@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Asset, Page
+from .models import Asset, Page, Wiki
 
 
 class PageForm(forms.ModelForm):
@@ -27,7 +27,9 @@ class PageForm(forms.ModelForm):
 class ImportForm(forms.Form):
     file = forms.FileField(help_text="Zip containing wiki pages")
     wipe = forms.BooleanField(
-        required=False, initial=False, help_text="Wipe the wiki first",
+        required=False,
+        initial=False,
+        help_text="Wipe the wiki first",
     )
 
 
@@ -39,3 +41,24 @@ class AssetForm(forms.ModelForm):
             "wiki": forms.HiddenInput(),
             "name": forms.HiddenInput(),
         }
+
+
+class SearchForm(forms.Form):
+    q = forms.CharField(
+        label="Query",
+        widget=forms.TextInput(attrs={"placeholder": "Search"}),
+    )
+    wikis = forms.ModelMultipleChoiceField(
+        queryset=Wiki.objects.none(),
+        widget=forms.CheckboxSelectMultiple(),
+    )
+
+    def __init__(self, *args, available_wikis=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if available_wikis is not None:
+            self.fields["wikis"].queryset = available_wikis
+
+    def clean_q(self):
+        q = self.cleaned_data["q"]
+        q = q.strip()
+        return q

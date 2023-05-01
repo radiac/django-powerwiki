@@ -1,0 +1,56 @@
+.powerwiki__body {
+  padding: 0.5rem 1rem;
+  display: flex;
+  width: 100%;
+
+  .powerwiki__content {
+    // Force flex to not grow this to overflow
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .powerwiki__sidebar {
+    flex: 0 0 auto;
+    width: 20rem;
+    border-right: 0;
+
+    ul {
+      list-style: none;
+    }
+
+    &>ul {
+      position: sticky;
+      padding-left: 1rem;
+      margin: 1rem 0 1rem 2rem;
+      border-left: 1px solid #ccc;
+      top: 0;
+
+      &>li {
+        a {
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+
+          &.selected {
+            color: #000;
+            font-weight: bold;
+          }
+        }
+
+        ul {
+          margin: 0 0 0 0.5rem;
+
+          a {
+            font-weight: normal;
+          }
+
+          ul {
+            font-size: 90%;
+          }
+        }
+      }
+    }
+  }
+}

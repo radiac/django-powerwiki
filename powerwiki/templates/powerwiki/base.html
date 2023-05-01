@@ -14,22 +14,17 @@
 {% block content %}
 <div class="powerwiki__container">
     <div class="powerwiki__menu">
-        {% if breadcrumbs %}
-        <ul class="powerwiki__menu_breadcrumbs">
-            {% for crumb in breadcrumbs %}
-                {% if forloop.last %}
-                    <li>{{ crumb.title }}</li>
-                {% else %}
-                    <li><a href="{{ crumb.url }}">{{ crumb.title }}</a></li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-        {% endif %}
+        {% include "powerwiki/includes/breadcrumbs.html" %}
         {% block wiki_menu %}{% endblock %}
     </div>
 
-    <div class="powerwiki__content">
-    {% block wiki_content %}{% endblock %}
+    <div class="powerwiki__body">
+      <div class="powerwiki__content">
+      {% block wiki_content %}{% endblock %}
+      </div>
+      {% block wiki_sidebar %}
+        <div class="powerwiki__sidebar"></div>
+      {% endblock %}
     </div>
 </div>
 {% endblock %}

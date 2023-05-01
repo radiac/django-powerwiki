@@ -18,6 +18,10 @@ const markupEngineToCodeMirror = {
 
 export const setup = () => {
   const formEditSave = document.getElementById('powerwiki__form-edit__save');
+  if (!formEditSave) {
+    return;
+  }
+
   const formMarkupEngine = document.querySelector(
     '.powerwiki__form-edit select[name="markup_engine"]'
   )

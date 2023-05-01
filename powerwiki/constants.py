@@ -18,14 +18,15 @@ PERM_CHOICES = (
 SCHEME_WIKI = "wiki"
 SCHEME_ASSET = "asset"
 SCHEME_IMAGE = "image"
+SCHEME_INDEX = "index"
 
 # URL patterns
 WIKI_SLUG_PATTERN = r"[a-zA-Z0-9][-\w]*"
 PAGE_PATH_PATTERN = r"[a-zA-Z0-9].*?(/[a-zA-Z0-9][- \w]*)*"
 ASSET_NAME_PATTERN = r"[a-zA-Z0-9].*?"
 
-# Wikilink tags
-WIKILINK_OPEN = "[["
-WIKILINK_SCHEME_SEPARATOR = ":"
-WIKILINK_LABEL_SEPARATOR = "|"
-WIKILINK_CLOSE = "]]"
+# Powerwiki tags
+TAG_OPEN = "[["
+TAG_SCHEME_SEPARATOR = ":"
+TAG_LABEL_SEPARATOR = "|"
+TAG_CLOSE = "]]"

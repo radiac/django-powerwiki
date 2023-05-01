@@ -2,11 +2,13 @@
 **                                                              Show styles
 */
 
-.powerwiki__content {
-  padding: 0.5em 1em;
+body.powerwiki_show .powerwiki__content {
+  padding: 0.5rem 1rem;
 
-  a[data-missing=True] {
-    color: red;
-    text-decoration-style: dashed;
+  .powerwiki__page {
+    a[data-missing=True] {
+      color: red;
+      text-decoration-style: dashed;
+    }
   }
 }

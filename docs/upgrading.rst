@@ -5,6 +5,24 @@ Powerwiki Changes
 Changelog
 =========
 
+0.4.0, TBC
+----------
+
+Features:
+
+* In-document navigation sidebar (requires JavaScript)
+* Enhanced search when using postgresql
+* Ability to search multiple wikis at once
+* New ``[[index:<path>]]`` tag
+* Converts ``->`` into ``→``
+
+
+Changes:
+
+* New ``Page.depth`` value, requires migration
+* Internal API: renamed ``WIKILINK_`` constants to ``TAG_``
+
+
 0.3.1, 2021-02-20
 -----------------
 
@@ -19,7 +37,7 @@ Bugfix:
 Features:
 
 * Add CodeMirror v5
-* Add post-engine processing for [[..]] wiki links
+* Add post-engine processing for ``[[..]]`` wiki links
 * reStructuredText markup engine now supports ``:wiki:`` and ``:asset:`` roles for
   slugification consistent with the rest of Powerwiki
 * Missing pages and assets are styled differently

@@ -2,77 +2,6 @@
 **                                                              Form
 */
 
-.powerwiki__form-edit {
-    $input-padding: 10px;
-
-    display: flex;
-    flex-direction: column;
-
-    input,
-    textarea,
-    .CodeMirror,
-    span.helptext {
-        display: block;
-        box-sizing: border-box;
-    }
-
-    &__title {
-        display: flex;
-        flex: 0 0 auto;
-
-        input[type="text"] {
-            flex: 1 1 auto;
-            padding: 0 $input-padding;
-            min-width: 50%;
-        }
-        input[type="submit"],
-        select[name="markup_engine"]
-        {
-            flex: 0 1 auto;
-            max-width: 25%;
-        }
-
-        input[type="text"],
-        input[type="submit"] {
-            font-size: 1.2rem;
-        }
-
-        input[type="text"]:focus + select[name="markup_engine"] {
-          display: none;
-        }
-    }
-
-    span.helptext {
-        flex: 0 0 auto;
-        color: #666;
-        font-size: 0.8em;
-    }
-
-    select[name="markup_engine"] {
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      font-size: 0.7rem;
-      padding: 0 0.5rem;
-      border: 0;
-      background: transparent;
-      text-align: right;
-      text-overflow: ellipsis;
-    }
-
-    textarea[name="content"] {
-        width: 100%;
-        font-family: monospace;
-        padding: 1.2rem $input-padding;
-    }
-
-    &__content {
-        flex: 1 1 auto;
-        position: relative;
-        height: 1vh;
-    }
-}
-
 // Parent design should use the body base class to make the powerwiki container full
 // height
 body.powerwiki_edit {
@@ -84,6 +13,7 @@ body.powerwiki_edit {
         .powerwiki__menu {
             flex: 0 0 auto;
         }
+
         .powerwiki__content {
             flex: 1 1 auto;
 
@@ -94,6 +24,84 @@ body.powerwiki_edit {
                 height: 100%;
                 margin: 0;
             }
+        }
+    }
+}
+
+body.powerwiki_edit {
+    .powerwiki__body {
+        padding: 0;
+        height: 100%;
+    }
+
+    .powerwiki__form-edit {
+        $input-padding: 10px;
+
+        display: flex;
+        flex-direction: column;
+
+        input,
+        textarea,
+        .CodeMirror,
+        span.helptext {
+            display: block;
+            box-sizing: border-box;
+        }
+
+        &__title {
+            display: flex;
+            flex: 0 0 auto;
+
+            input[type="text"] {
+                flex: 1 1 auto;
+                padding: 0 $input-padding;
+                min-width: 50%;
+            }
+
+            input[type="submit"],
+            select[name="markup_engine"] {
+                flex: 0 1 auto;
+                max-width: 25%;
+            }
+
+            input[type="text"],
+            input[type="submit"] {
+                font-size: 1.2rem;
+            }
+
+            input[type="text"]:focus+select[name="markup_engine"] {
+                display: none;
+            }
+        }
+
+        span.helptext {
+            flex: 0 0 auto;
+            color: #666;
+            font-size: 0.8em;
+        }
+
+        select[name="markup_engine"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            font-size: 0.7rem;
+            padding: 0 0.5rem;
+            border: 0;
+            background: transparent;
+            text-align: right;
+            text-overflow: ellipsis;
+        }
+
+        textarea[name="content"] {
+            width: 100%;
+            font-family: monospace;
+            padding: 1.2rem $input-padding;
+        }
+
+        &__content {
+            flex: 1 1 auto;
+            position: relative;
+            height: 1vh;
         }
     }
 }

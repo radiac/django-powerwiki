@@ -2,8 +2,27 @@
 Using Powerwiki
 ===============
 
-Writing pages
-=============
+Working with pages
+==================
+
+Add a page
+----------
+
+To add a page, create a link to a page that doesn't exist (or visit it directly by
+changing the URL).
+
+Links to pages that don't exist will be style differently; going to the page will take
+you to the edit form (provided you have permission).
+
+
+Delete a page
+-------------
+
+Remove all content from a page and save it to delete it.
+
+
+Syntax
+======
 
 Powerwiki supports markup engines for writing in different source languages. You can add
 your own engine too if there's another language you would like to support. Set the
@@ -17,11 +36,17 @@ Wiki syntax links
 The easiest way to link to pages and assets is using the custom wiki syntax. This is
 available in all markup engines.
 
-To link to a page::
+To link to a page in the same wiki::
 
     [[path]]
+    [[path|label]]
     [[wiki:path]]
-    [[wiki:slug:path]]
+    [[:slug:path]]
+
+
+To link to a page in another wiki::
+
+    [[wiki:wiki_slug:path]]
 
 
 To link to an asset::
@@ -32,6 +57,15 @@ To link to an asset::
 To insert an asset as an image::
 
     [[image:path]]
+
+
+To insert an index table (list of child pages) for the current page::
+
+    [[index:]]
+
+To insert an index table for another page in the same wiki::
+
+    [[index:path]]
 
 
 Native links

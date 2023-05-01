@@ -1,0 +1,38 @@
+ul.powerwiki__breadcrumbs {
+  flex: 1 1 auto;
+  display: flex;
+
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: inline-block;
+    margin: 0;
+
+    a,
+    input {
+      display: inline-block;
+      padding: 0 4px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+
+  li:before {
+    content: '\00bb';
+    padding-right: 4px;
+  }
+
+  li:first-child {
+    &::before {
+      display: none;
+    }
+
+    a {
+      padding-left: 0;
+    }
+  }
+}

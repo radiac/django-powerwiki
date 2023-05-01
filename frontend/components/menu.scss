@@ -7,7 +7,7 @@
         box-sizing: border-box;
         padding: 0 1em;
 
-        & > ul {
+        &>ul {
             flex: 1 1 auto;
             display: flex;
 
@@ -24,23 +24,13 @@
                     display: inline-block;
                     padding: 0 4px;
                 }
+
                 a:hover {
                     text-decoration: underline;
                 }
             }
 
-            &.powerwiki__menu_breadcrumbs {
-                li:before {
-                    content: '\00bb';
-                    padding-right: 4px;
-                }
-
-                li:first-child:before {
-                    display: none;
-                }
-            }
-
-            &.powerwiki__menu_options  {
+            &.powerwiki__menu_options {
                 flex: 0 0 auto;
                 text-align: right;
             }

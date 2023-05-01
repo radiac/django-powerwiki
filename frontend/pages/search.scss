@@ -1,0 +1,25 @@
+body.powerwiki_search .powerwiki__content {
+  ul {
+    list-style: none;
+
+    div.title {
+      a {
+        display: block;
+        font-size: 1.2rem;
+      }
+    }
+
+    ul.powerwiki__breadcrumbs {
+      font-size: 0.9rem;
+      margin-left: 2rem;
+    }
+
+    div.summary {
+      margin: 0 0 1rem 2rem;
+
+      &>p:first-child {
+        margin-top: 0;
+      }
+    }
+  }
+}

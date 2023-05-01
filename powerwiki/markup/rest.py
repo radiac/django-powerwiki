@@ -55,6 +55,7 @@ class RestructuredText(MarkupEngine):
         # Prepare docutils for custom roles
         with TmpRole("wiki", role_link_wiki), TmpRole("asset", role_link_asset):
             # Convert to HTML
+            # TODO: capture exceptions
             parts = publish_parts(
                 source=raw,
                 writer_name="html",

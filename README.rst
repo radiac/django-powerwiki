@@ -22,6 +22,7 @@ Features
 * Create pages in Markdown, reStructuredText, plain text, or extend with a custom format
 * Syntax highlighting using CodeMirror
 * Flexible responsive layout
+* In-document navigation, full text search, assets support and more
 
 See `Upgrading <docs/upgrading.rst>`_ for changelog and upgrade instructions
 
@@ -29,7 +30,7 @@ See `Upgrading <docs/upgrading.rst>`_ for changelog and upgrade instructions
 Quickstart
 ==========
 
-#. Install in a single or multiple wiki configuration at a url of your choice - see
+#. Install in a single or multiple wiki configuration in your existing Django site - see
    `Installation <docs/installation.rst>`_
 
 #. Add users, wikis and configure permissions in the admin site

@@ -15,10 +15,42 @@ from .markup.loader import engine_field_choices, get_engine, load_engines
 
 
 if "django.contrib.postgres" in settings.INSTALLED_APPS:
-    from django.contrib.postgres.search import SearchVector
+    from django.contrib.postgres.search import (
+        SearchVector,
+        SearchRank,
+        SearchQuery,
+        SearchHeadline,
+    )
 
 #  Preload engines
 load_engines()
+
+# Unique strings for headline marking
+# TODO: This is a hacky solution; replace with on-save rendering, bleaching and caching
+HEADLINE_START = "[[pw:hl:start]]"
+HEADLINE_STOP = "[[pw:hl:stop]]"
+
+
+class WikiQuerySet(models.QuerySet):
+    def can_read(self, user):
+        # Superusers get all
+        if user.is_superuser:
+            return self
+
+        # Everyone gets public
+        rules = models.Q(constants.PERM_PUBLIC)
+        if user.is_authenticated:
+            rules |= models.Q(constants.PERM_USERS)
+        if user.is_staff:
+            rules |= models.Q(constants.PERM_STAFF)
+
+        # And per-wiki
+        special_wikis = WikiPermissions.objects.filter(
+            user=user, can_read=True
+        ).value_list("wiki_id", flat=True)
+        rules |= models.Q(id__in=special_wikis)
+
+        return self.filter(rules)
 
 
 class Wiki(models.Model):
@@ -26,8 +58,14 @@ class Wiki(models.Model):
     Wiki
     """
 
-    title = models.CharField(max_length=255, help_text="Title of the wiki",)
-    slug = models.SlugField(unique=True, help_text="Slug for the wiki",)
+    title = models.CharField(
+        max_length=255,
+        help_text="Title of the wiki",
+    )
+    slug = models.SlugField(
+        unique=True,
+        help_text="Slug for the wiki",
+    )
     description = models.TextField(blank=True, help_text="Description of wiki")
     perm_read = models.IntegerField(
         default=constants.PERM_SU,
@@ -49,6 +87,8 @@ class Wiki(models.Model):
     users = models.ManyToManyField(
         get_user_model(), through="WikiPermissions", related_name="wikis"
     )
+
+    objects = WikiQuerySet.as_manager()
 
     class Meta:
         ordering = ("title",)
@@ -123,22 +163,14 @@ class Wiki(models.Model):
                             "title": utils.title_from_path(path_fragment),
                             "class": " doesnotexist",
                             "url": utils.reverse_to_page(
-                                "powerwiki:page-edit", self.slug, path,
+                                "powerwiki:page-edit",
+                                self.slug,
+                                path,
                             ),
                         }
                     )
                 path_root += path_fragment + "/"
         return breadcrumbs
-
-    def search(self, query):
-        if "django.contrib.postgres" in settings.INSTALLED_APPS:
-            return self.pages.annotate(search=SearchVector("title", "content")).filter(
-                search=query
-            )
-        else:
-            return self.pages.filter(
-                models.Q(title__icontains=query) | models.Q(content__icontains=query)
-            )
 
 
 class WikiPermissions(models.Model):
@@ -152,13 +184,52 @@ class WikiPermissions(models.Model):
     can_edit = models.BooleanField(default=True, help_text="User can edit the wiki")
 
 
+class PageQuerySet(models.QuerySet):
+    def search(self, query: str):
+        # Plain field search
+        if "django.contrib.postgres" not in settings.INSTALLED_APPS:
+            return self.filter(
+                models.Q(title__icontains=query) | models.Q(content__icontains=query)
+            )
+
+        # Postgres full text search
+        search_vector = SearchVector("title", weight="A") + SearchVector(
+            "content", weight="B"
+        )
+        search_query = SearchQuery(query)
+
+        # TODO: We should get headlines from a cached rendered page.
+        # We can then drop start_sel and stop_sel, and the powerwiki_headline filter
+        search_headline = SearchHeadline(
+            "content",
+            search_query,
+            min_words=30,
+            max_words=100,
+            start_sel=HEADLINE_START,
+            stop_sel=HEADLINE_STOP,
+        )
+
+        return (
+            self.annotate(
+                search=search_vector,
+                rank=SearchRank(search_vector, search_query),
+                summary=search_headline,
+            )
+            .filter(search=search_query)  # .filter(rank__gte=0.3)
+            .order_by("-rank")
+        )
+
+
 class Page(models.Model):
     """
     Wiki page
     """
 
     wiki = models.ForeignKey(Wiki, related_name="pages", on_delete=models.CASCADE)
-    title = models.CharField(max_length=255, help_text="Title of the page",)
+    title = models.CharField(
+        max_length=255,
+        help_text="Title of the page",
+    )
     path = models.CharField(
         max_length=100,
         validators=[
@@ -174,8 +245,10 @@ class Page(models.Model):
         ],
         help_text="Path for the page, under the wiki root",
     )
+    depth = models.PositiveIntegerField(default=0)
     is_locked = models.BooleanField(
-        default=False, help_text="If locked, can only be edited by wiki admin",
+        default=False,
+        help_text="If locked, can only be edited by wiki admin",
     )
     content = models.TextField(blank=True, help_text="Page content")
     markup_engine = models.CharField(
@@ -184,12 +257,18 @@ class Page(models.Model):
         choices=engine_field_choices(),
     )
 
+    objects = PageQuerySet.as_manager()
+
     class Meta:
         unique_together = ("wiki", "path")
         ordering = ("title",)
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.depth = self.path.count("/")
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return utils.reverse_to_page("powerwiki:page", self.wiki.slug, self.path)
@@ -199,6 +278,9 @@ class Page(models.Model):
 
     def full_title(self):
         return "%s" % (self.title)
+
+    def gen_breadcrumbs(self):
+        return self.wiki.gen_breadcrumbs(self.path)
 
     def render_content(self, user: AbstractUser):
         engine_class = get_engine(self.markup_engine)

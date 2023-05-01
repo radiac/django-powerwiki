@@ -1,22 +1,44 @@
 {% extends "powerwiki/base.html" %}
+{% load powerwiki %}
 
 {% block wiki_menu %}
-    <ul class="powerwiki__menu_options">
-        <li>
-            <form action="{% url "powerwiki:search" wiki_slug=wiki_slug %}" method="GET">
-            <input type="text" name="q" placeholder="Search" value="{{ search_query }}">
-            <input type="submit" value="Go">
-            </form>
-        </li>
-    </ul>
+  <ul class="powerwiki__menu_options">
+    <li>
+      <form action="{% url "powerwiki:search" wiki_slug=wiki_slug %}" method="GET">
+      <input type="text" name="q" placeholder="Search" value="{{ search_query }}">
+      <input type="submit" value="Go">
+      </form>
+    </li>
+  </ul>
 {% endblock %}
 
 {% block wiki_content %}
-<ul>
+  <ul>
     {% for page in pages %}
-        <li><a href="{{ page.get_absolute_url }}">{{ page.title }}</a></li>
+      <li>
+        <div class="title">
+          <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
+        </div>
+        {% include "powerwiki/includes/breadcrumbs.html" with breadcrumbs=page.gen_breadcrumbs %}
+
+        {% if page.summary %}
+          <div class="summary">
+            {{ page.summary|powerwiki_summary }}
+          </div>
+        {% endif %}
+      </li>
     {% empty %}
-        <li>No results</li>
+      <li>No results</li>
     {% endfor %}
-</ul>
+  </ul>
+{% endblock %}
+
+{% block wiki_sidebar %}
+  <div class="powerwiki__sidebar">
+      <form action="{% url "powerwiki:search" wiki_slug=wiki_slug %}" method="GET">
+      <input type="text" name="q" placeholder="Search" value="{{ search_query }}">
+      {{ search_form.wikis }}
+      <input type="submit" value="Go">
+      </form>
+  </div>
 {% endblock %}

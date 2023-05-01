@@ -1,0 +1,11 @@
+{% if breadcrumbs %}
+<ul class="powerwiki__breadcrumbs">
+  {% for crumb in breadcrumbs %}
+    {% if forloop.last %}
+      <li>{{ crumb.title }}</li>
+    {% else %}
+      <li><a href="{{ crumb.url }}">{{ crumb.title }}</a></li>
+    {% endif %}
+  {% endfor %}
+</ul>
+{% endif %}
