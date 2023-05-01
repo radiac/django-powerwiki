@@ -18,7 +18,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 keywords = ["django", "wiki"]
-requires_python = ">=3.7"
+requires-python = ">=3.7"
 dependencies = [
     "Django>=2.2",
     "django-yaa-settings",
@@ -36,6 +36,9 @@ dependencies = [
 [tool.setuptools.packages.find]
 include = ["powerwiki*"]
 exclude = ["docs*", "tests*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "powerwiki.__version__"}
 
 [tool.pytest.ini_options]
 addopts = "--cov=powerwiki --cov-report=term --cov-report=html"
