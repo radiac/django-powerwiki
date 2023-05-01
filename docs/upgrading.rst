@@ -5,8 +5,8 @@ Powerwiki Changes
 Changelog
 =========
 
-0.4.0, TBC
-----------
+0.4.0, 2023-05-01
+-----------------
 
 Features:
 
@@ -21,6 +21,7 @@ Changes:
 
 * New ``Page.depth`` value, requires migration
 * Internal API: renamed ``WIKILINK_`` constants to ``TAG_``
+* Removed support for Python <3.9 - may still work, no longer tested
 
 
 0.3.1, 2021-02-20
