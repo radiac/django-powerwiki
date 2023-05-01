@@ -2,7 +2,7 @@
 Django Powerwiki - Run multiple wikis in Django
 ===============================================
 
-A work in progress wiki system for Django 2.2+ on Python 3.7+.
+A wiki system for Django 2.2+ on Python 3.9+.
 
 * Project site: http://radiac.net/projects/django-powerwiki/
 * Source code: https://github.com/radiac/django-powerwiki
