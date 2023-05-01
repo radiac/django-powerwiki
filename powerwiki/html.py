@@ -20,13 +20,13 @@ from .constants import (
     PAGE_PATH_PATTERN,
     SCHEME_ASSET,
     SCHEME_IMAGE,
-    SCHEME_WIKI,
     SCHEME_INDEX,
-    WIKI_SLUG_PATTERN,
+    SCHEME_WIKI,
     TAG_CLOSE,
     TAG_LABEL_SEPARATOR,
     TAG_OPEN,
     TAG_SCHEME_SEPARATOR,
+    WIKI_SLUG_PATTERN,
 )
 from .models import Asset, Page, Wiki
 

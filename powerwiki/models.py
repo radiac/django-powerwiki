@@ -16,10 +16,10 @@ from .markup.loader import engine_field_choices, get_engine, load_engines
 
 if "django.contrib.postgres" in settings.INSTALLED_APPS:
     from django.contrib.postgres.search import (
-        SearchVector,
-        SearchRank,
-        SearchQuery,
         SearchHeadline,
+        SearchQuery,
+        SearchRank,
+        SearchVector,
     )
 
 #  Preload engines

@@ -1,8 +1,9 @@
 from django import template
-from django.utils.safestring import mark_safe
 from django.utils.html import escape
+from django.utils.safestring import mark_safe
 
 from ..models import HEADLINE_START, HEADLINE_STOP
+
 
 register = template.Library()
 
