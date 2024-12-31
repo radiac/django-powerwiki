@@ -1,4 +1,4 @@
-0/*
+/*
 ** JavaScript for Powerwiki show page
 */
 
