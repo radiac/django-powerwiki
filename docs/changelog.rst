@@ -5,8 +5,8 @@ Powerwiki Changes
 Changelog
 =========
 
-0.5.0, TBC
-----------
+0.5.0, 2024-12-31
+-----------------
 
 Features:
 
@@ -18,6 +18,7 @@ Changes:
 
 * Documentation to Read The Docs
 * Upgraded codemirror and configured tab to insert spaces
+* Drop support for Django 2.2
 
 
 0.4.0, 2023-05-01

@@ -4,7 +4,7 @@ Installation
 
 #. Install ``django-powerwiki`` (currently only on github)::
 
-    pip install -e git+https://github.com/radiac/django-powerwiki.git#egg=django-powerwiki
+    pip install django-powerwiki
 
 
 #. Add to ``INSTALLED_APPS``::

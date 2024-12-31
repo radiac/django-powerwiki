@@ -53,5 +53,5 @@ Roadmap
 =======
 
 * Views for wiki admin and access management
-* Support for a full history and drafts
+* Support for history and diffing
 * Migration tools for moving from other wikis

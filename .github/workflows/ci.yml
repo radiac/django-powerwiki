@@ -11,15 +11,15 @@ jobs:
     strategy:
       matrix:
         include:
-          # Django LTS on Python oldest to latest - dj2.2, py3.9
-          - python: 3.9
-            django: 2.2
-          # Django supported on LTS - dj3.2, py3.9
+          # Django LTS on Python oldest to latest - dj3.2, py3.9
           - python: 3.9
             django: 3.2
-          # Django supported on latest - dj4.2, py3.11
+          # Django supported on latest LTS - dj4.2, py3.11
           - python: 3.11
             django: 4.2
+          # Django supported on latest LTS - dj5.1, py3.12
+          - python: 3.12
+            django: 5.1
 
     steps:
       - uses: actions/checkout@v2
@@ -34,7 +34,7 @@ jobs:
           pip install "django~=${{ matrix.django }}.0"
       - name: Set Python path
         run: |
-            echo "PYTHONPATH=." >> $GITHUB_ENV
+          echo "PYTHONPATH=." >> $GITHUB_ENV
       - name: Test
         run: |
           pytest
