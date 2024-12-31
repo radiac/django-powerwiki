@@ -10,5 +10,5 @@ Contents
 
     installation
     usage
-    upgrading
+    changelog
     contributing

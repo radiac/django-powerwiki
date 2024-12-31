@@ -13,15 +13,18 @@ def index(request):
     Index redirects to /index/
     """
     # Get all wikis that the user is allowed to read
-    wikis = []
-    for wiki in models.Wiki.objects.all():
-        if wiki.can_read(request.user):
-            wikis.append(wiki)
+    available_wikis = models.Wiki.objects.can_read(request.user)
 
     return render(
         request,
         "powerwiki/index.html",
-        {"title": "Available Wikis", "wikis": wikis, "body_class": "powerwiki_index"},
+        {
+            "title": "Available Wikis",
+            "active_wikis": available_wikis.active(),
+            "archived_wikis": available_wikis.archived(),
+            "body_class": "powerwiki_index",
+            "search_form": forms.SearchForm(available_wikis=available_wikis),
+        },
     )
 
 
@@ -78,38 +81,63 @@ def search(request, wiki, wiki_slug):
     Search a wiki
     """
     get_data = request.GET.copy()
-    if "wikis" not in get_data:
-        get_data["wikis"] = wiki.pk
+    if ("active_wikis" not in get_data) and ("archived_wikis" not in get_data):
+        get_data["archived_wikis" if wiki.archived else "active_wikis"] = wiki.pk
 
     form = forms.SearchForm(
         get_data,
         available_wikis=models.Wiki.objects.can_read(request.user),
     )
 
+    extra_context = {
+        "wiki_slug": wiki_slug,
+        "breadcrumbs": (
+            wiki.gen_breadcrumbs(app_settings.FRONT_PATH)
+            + [{"title": "Search", "class": "", "url": ""}]
+        ),
+    }
+
+    return _search_common(request, form, extra_context)
+
+
+def search_all(request):
+    """
+    Search all wikis
+    """
+    available_wikis = models.Wiki.objects.can_read(request.user)
+
+    get_data = request.GET.copy()
+    if ("active_wikis" not in get_data) and ("archived_wikis" not in get_data):
+        get_data.setlist(
+            "active_wikis", available_wikis.active().values_list("pk", flat=True)
+        )
+
+    form = forms.SearchForm(
+        get_data,
+        available_wikis=available_wikis,
+    )
+
+    return _search_common(request, form, {})
+
+
+def _search_common(request, form, extra_context):
     if form.is_valid():
         query = form.cleaned_data["q"]
-        wikis = form.cleaned_data["wikis"]
+        wikis = form.cleaned_data["active_wikis"] | form.cleaned_data["archived_wikis"]
         pages = models.Page.objects.filter(wiki__in=wikis).search(query)
     else:
         pages = []
         query = ""
 
-    return render(
-        request,
-        "powerwiki/search.html",
-        {
-            "title": "Search",
-            "wiki_slug": wiki_slug,
-            "breadcrumbs": (
-                wiki.gen_breadcrumbs(app_settings.FRONT_PATH)
-                + [{"title": "Search", "class": "", "url": ""}]
-            ),
-            "search_form": form,
-            "search_query": query,
-            "pages": pages,
-            "body_class": "powerwiki_search",
-        },
-    )
+    context = {
+        "title": "Search",
+        "search_form": form,
+        "search_query": query,
+        "pages": pages,
+        "body_class": "powerwiki_search",
+    }
+    context.update(extra_context)
+    return render(request, "powerwiki/search.html", context)
 
 
 @get_wiki

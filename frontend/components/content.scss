@@ -1,17 +1,8 @@
 .powerwiki__body {
   padding: 0.5rem 1rem;
-  display: flex;
   width: 100%;
 
-  .powerwiki__content {
-    // Force flex to not grow this to overflow
-    min-width: 0;
-    flex: 1 1 auto;
-  }
-
   .powerwiki__sidebar {
-    flex: 0 0 auto;
-    width: 20rem;
     border-right: 0;
 
     ul {
@@ -19,12 +10,6 @@
     }
 
     &>ul {
-      position: sticky;
-      padding-left: 1rem;
-      margin: 1rem 0 1rem 2rem;
-      border-left: 1px solid #ccc;
-      top: 0;
-
       &>li {
         a {
           text-decoration: none;
@@ -52,5 +37,42 @@
         }
       }
     }
+  }
+}
+
+@media (min-width: 800px) {
+  .powerwiki__body {
+    display: flex;
+  }
+  .powerwiki__content {
+    // Force flex to not grow this to overflow
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+  .powerwiki__sidebar {
+    flex: 0 0 auto;
+    width: 20rem;
+    &>ul {
+      position: sticky;
+      top: 0;
+      padding-left: 1rem;
+      margin: 1rem 0 1rem 2rem;
+      border-left: 1px solid var(--powerwiki-border);
+
+    }
+  }
+}
+@media (max-width: 800px) {
+  .powerwiki__body {
+  display: flex;
+  flex-direction: column-reverse;
+
+  }
+  .powerwiki__content {
+
+  }
+  .powerwiki__sidebar {
+      border-bottom: 1px solid var(--powerwiki-border);
+
   }
 }

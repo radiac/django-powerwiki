@@ -4,10 +4,7 @@
 {% block wiki_menu %}
     <ul class="powerwiki__menu_options">
         <li>
-            <form action="{% url "powerwiki:search" wiki_slug=wiki_slug %}" method="GET">
-            <input type="text" name="q" placeholder="Search" value="{{ search_query }}">
-            <input type="submit" value="Go">
-            </form>
+            {% include "powerwiki/includes/search.html" %}
         </li>
         {% if edit_url %}
         <li><a href="{{ edit_url }}" id="powerwiki__page__edit">{{ edit_label|default:"Edit page" }}</a></li>

@@ -1,0 +1,58 @@
+<form
+  {% if wiki_slug %}
+    action="{% url "powerwiki:search" wiki_slug=wiki_slug %}"
+  {% else %}
+    action="{% url "powerwiki:search" %}"
+  {% endif %}
+  method="GET"
+  class="powerwiki__search"
+>
+
+<input type="text" name="q" placeholder="Search" value="{{ search_query }}">
+
+{% if search_form %}
+  {{ search_form.errors }}
+  {{ search_form.active_wikis }}
+  {{ search_form.archived_wikis }}
+{% endif %}
+
+<input type="submit" value="Go">
+</form>
+
+<script>
+  function addToggleAll(elId, label) {
+    const el = document.getElementById(elId);
+    if (!el) {
+      console.log('el not found');
+      return;
+    }
+    const checkboxes = el.querySelectorAll('input[type="checkbox"]')
+
+    const toggler = document.createElement('div');
+    toggler.className = 'powerwiki__toggler';
+    toggler.innerHTML = `
+      <label for="${elId}_toggle">
+        <input type="checkbox" id="${elId}_toggle">
+        ${label}
+      </label>
+    `;
+    el.insertBefore(toggler, el.firstChild);
+    const toggleBox = toggler.querySelector('input');
+
+    function refresh() {
+      toggleBox.checked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+    }
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', e => { refresh(); });
+    });
+
+
+    toggleBox.addEventListener('change', e => {
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = toggleBox.checked;
+      });
+    });
+  }
+  addToggleAll('id_active_wikis', 'Active');
+  addToggleAll('id_archived_wikis', 'Archived');
+</script>

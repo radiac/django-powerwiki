@@ -181,6 +181,6 @@ should be styled to use as much width and height of the viewport as is possible 
 your design, eg with ``min-height: 100%`` or vertical flexbox. See the example project
 for details.
 
-There are some values you may want to override to fit with your design, such as
-``.powerwiki__content`` padding, or ``.powerwiki__content a[data-missing=True]`` style -
-see stylesheets for details.
+There are some CSS variables and properties you may want to override to fit with your
+design, such as ``.powerwiki__content`` padding, or ``.powerwiki__content
+a[data-missing=True]`` style - see stylesheets for details.

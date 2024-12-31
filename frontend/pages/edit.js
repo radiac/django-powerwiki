@@ -1,30 +1,29 @@
 /*
-** JavaScript for Powerwiki edit page
-*/
+ ** JavaScript for Powerwiki edit page
+ */
 
-import CodeMirror from 'codemirror/lib/codemirror.js';
+import CodeMirror from "codemirror/lib/codemirror.js";
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/rst/rst";
 import "codemirror/mode/markdown/markdown";
 
 import { addCtrlKeyListener } from "../lib/keys.js";
 
-
 // Map of Powerwiki markup engine to CodeMirror mode
 const markupEngineToCodeMirror = {
-  'powerwiki.markup.rest.RestructuredText': 'rst',
-  'powerwiki.markup.md.Markdown': 'markdown',
+  "powerwiki.markup.rest.RestructuredText": "rst",
+  "powerwiki.markup.md.Markdown": "markdown",
 };
 
 export const setup = () => {
-  const formEditSave = document.getElementById('powerwiki__form-edit__save');
+  const formEditSave = document.getElementById("powerwiki__form-edit__save");
   if (!formEditSave) {
     return;
   }
 
   const formMarkupEngine = document.querySelector(
     '.powerwiki__form-edit select[name="markup_engine"]'
-  )
+  );
   const formContent = document.querySelector(
     '.powerwiki__form-edit__content textarea[name="content"]'
   );
@@ -34,8 +33,8 @@ export const setup = () => {
     if (!formEditSave) {
       return;
     }
-    addCtrlKeyListener('s', e => {
-      formEditSave.click()
+    addCtrlKeyListener("s", (e) => {
+      formEditSave.click();
     });
   };
 
@@ -55,6 +54,13 @@ export const setup = () => {
     }
     editor = CodeMirror.fromTextArea(formContent, {
       mode: mode,
+      indentWithTabs: false,
+    });
+    editor.setOption("extraKeys", {
+      Tab: function (cm) {
+        var spaces = Array(cm.getOption("indentUnit") * 2).join(" ");
+        cm.replaceSelection(spaces);
+      },
     });
   };
   formMarkupEngine.addEventListener("change", initEditor);

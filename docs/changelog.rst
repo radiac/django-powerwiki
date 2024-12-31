@@ -5,6 +5,21 @@ Powerwiki Changes
 Changelog
 =========
 
+0.5.0, TBC
+----------
+
+Features:
+
+* Archived wikis
+* Global search, smarter wiki selection during search
+* Redesigned index page with logo support for easier browsing
+
+Changes:
+
+* Documentation to Read The Docs
+* Upgraded codemirror and configured tab to insert spaces
+
+
 0.4.0, 2023-05-01
 -----------------
 

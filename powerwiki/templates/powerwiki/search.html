@@ -2,14 +2,6 @@
 {% load powerwiki %}
 
 {% block wiki_menu %}
-  <ul class="powerwiki__menu_options">
-    <li>
-      <form action="{% url "powerwiki:search" wiki_slug=wiki_slug %}" method="GET">
-      <input type="text" name="q" placeholder="Search" value="{{ search_query }}">
-      <input type="submit" value="Go">
-      </form>
-    </li>
-  </ul>
 {% endblock %}
 
 {% block wiki_content %}
@@ -35,10 +27,6 @@
 
 {% block wiki_sidebar %}
   <div class="powerwiki__sidebar">
-      <form action="{% url "powerwiki:search" wiki_slug=wiki_slug %}" method="GET">
-      <input type="text" name="q" placeholder="Search" value="{{ search_query }}">
-      {{ search_form.wikis }}
-      <input type="submit" value="Go">
-      </form>
+      {% include "powerwiki/includes/search.html" %}
   </div>
 {% endblock %}

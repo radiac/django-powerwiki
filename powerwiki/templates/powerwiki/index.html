@@ -1,16 +1,60 @@
 {% extends "powerwiki/base.html" %}
+{% load static %}
 
 {% block wiki_content %}
-  {% if wikis %}
-    <table>
-    {% for wiki in wikis %}
-      <tr>
-        <td><a href="{{ wiki.get_absolute_url }}">{{ wiki.title }}</a></td>
-        <td>{{ wiki.description|default:"&nbsp;" }}</td>
-      </tr>
-    {% endfor %}
-    </table>
+  {% if active_wikis or archived_wikis %}
+
+    {% if active_wikis %}
+      <div class="powerwiki__list">
+        {% for wiki in active_wikis %}
+          <a href="{{ wiki.get_absolute_url }}">
+            <h3>{{ wiki.title }}</h3>
+            {% if wiki.logo %}
+              <img src="{{ wiki.logo.url }}">
+            {% else %}
+              <img src="{% static "powerwiki/logo_default.svg" %}">
+            {% endif %}
+            {% if wiki.description %}<div>{{ wiki.description }}</div>{% endif %}
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if archived_wikis %}
+      {% if active_wikis %}
+        <details class="powerwiki__list powerwiki_archived">
+          <summary>Archived</summary>
+      {% else %}
+        <div class="powerwiki__list powerwiki_archived">
+      {% endif %}
+
+      {% for wiki in archived_wikis %}
+        <a href="{{ wiki.get_absolute_url }}">
+          <h3>{{ wiki.title }}</h3>
+          {% if wiki.logo %}
+            <img src="{{ wiki.logo.url }}">
+          {% else %}
+            <img src="{% static "powerwiki/logo_default.svg" %}">
+          {% endif %}
+          {% if wiki.description %}<div>{{ wiki.description }}</div>{% endif %}
+        </a>
+      {% endfor %}
+
+      {% if active_wikis %}
+        </details>
+      {% else %}
+        </div>
+      {% endif %}
+    {% endif %}
+
   {% else %}
     <p>There are no wikis available.</p>
   {% endif %}
+{% endblock %}
+
+
+{% block wiki_sidebar %}
+  <div class="powerwiki__sidebar">
+      {% include "powerwiki/includes/search.html" %}
+  </div>
 {% endblock %}

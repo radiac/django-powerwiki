@@ -1,24 +1,50 @@
-body.powerwiki_search .powerwiki__content {
-  ul {
-    list-style: none;
+body.powerwiki_search {
+  .powerwiki__content {
+    ul {
+      list-style: none;
 
-    div.title {
-      a {
-        display: block;
-        font-size: 1.2rem;
+      div.title {
+        a {
+          display: block;
+          font-size: 1.2rem;
+        }
+      }
+
+      ul.powerwiki__breadcrumbs {
+        font-size: 0.9rem;
+        margin-left: 2rem;
+      }
+
+      div.summary {
+        margin: 0 0 1rem 2rem;
+
+        &>p:first-child {
+          margin-top: 0;
+        }
       }
     }
 
-    ul.powerwiki__breadcrumbs {
-      font-size: 0.9rem;
-      margin-left: 2rem;
+  }
+}
+
+.powerwiki__sidebar {
+  padding: 0.5rem 0;
+
+  .powerwiki__search {
+    input[type="text"] {
+      font-size: 1.2rem;
     }
 
-    div.summary {
-      margin: 0 0 1rem 2rem;
+    #id_active_wikis,
+    #id_archived_wikis {
+      margin: 0.6rem 0;
 
-      &>p:first-child {
-        margin-top: 0;
+      & > div {
+        margin-left: 1rem;
+      }
+
+      .powerwiki__toggler {
+        margin-left: 0;
       }
     }
   }

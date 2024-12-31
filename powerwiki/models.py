@@ -1,6 +1,7 @@
 """
 Powerwiki models
 """
+
 import os
 
 from django.conf import settings
@@ -32,6 +33,12 @@ HEADLINE_STOP = "[[pw:hl:stop]]"
 
 
 class WikiQuerySet(models.QuerySet):
+    def active(self):
+        return self.filter(archived=False)
+
+    def archived(self):
+        return self.filter(archived=True)
+
     def can_read(self, user):
         # Superusers get all
         if user.is_superuser:
@@ -67,6 +74,11 @@ class Wiki(models.Model):
         help_text="Slug for the wiki",
     )
     description = models.TextField(blank=True, help_text="Description of wiki")
+    logo = models.ImageField(blank=True, null=True)
+    archived = models.BooleanField(
+        default=False,
+        help_text="Archived wikis are available but hidden from normal use",
+    )
     perm_read = models.IntegerField(
         default=constants.PERM_SU,
         choices=constants.PERM_CHOICES,

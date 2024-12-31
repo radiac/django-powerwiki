@@ -4,7 +4,7 @@ Django Powerwiki - Run multiple wikis in Django
 
 A wiki system for Django 2.2+ on Python 3.9+.
 
-* Project site: http://radiac.net/projects/django-powerwiki/
+* Project site: https://radiac.net/projects/django-powerwiki/
 * Source code: https://github.com/radiac/django-powerwiki
 
 .. image:: https://github.com/radiac/django-powerwiki/actions/workflows/ci.yml/badge.svg
@@ -36,3 +36,10 @@ Quickstart
 #. Add users, wikis and configure permissions in the admin site
 
 #. Write pages using your choice of markup language - see `Usage <docs/usage.rst>`_
+
+
+Credits
+=======
+
+Thanks to `dhanis <https://thenounproject.com/creator/dhanisrokhman/>`_ for the
+`default wiki logo <https://thenounproject.com/icon/book-7442011/>`_.

@@ -1,4 +1,4 @@
-from django.urls import re_path
+from django.urls import path, re_path
 
 from . import app_settings, views
 from .constants import ASSET_NAME_PATTERN, PAGE_PATH_PATTERN, WIKI_SLUG_PATTERN
@@ -20,6 +20,7 @@ else:
 
 
 urlpatterns = [
+    path("_search/", views.search_all, name="search"),
     re_path(
         rf"^{url_prefix}(?P<page_path>{PAGE_PATH_PATTERN})/_edit/$",
         views.page_edit,

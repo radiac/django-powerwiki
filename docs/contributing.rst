@@ -37,18 +37,21 @@ Testing
 
 It is greatly appreciated when contributions come with unit tests.
 
-Use ``pytest`` to run the tests on your current installation, or ``tox`` to run it on
-the supported variants::
+Use ``pytest`` to run the tests on your current installation::
 
   pytest
-  tox
 
 These will also generate a ``coverage`` HTML report.
+
+If running from within the docker container, you may need to run this using::
+
+  unset DJANGO_CONFIGURATION
+  PYTHONPATH=. pytest tests
 
 
 Roadmap
 =======
 
-* Wiki and access management
+* Views for wiki admin and access management
 * Support for a full history and drafts
 * Migration tools for moving from other wikis

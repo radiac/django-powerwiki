@@ -48,15 +48,22 @@ class SearchForm(forms.Form):
         label="Query",
         widget=forms.TextInput(attrs={"placeholder": "Search"}),
     )
-    wikis = forms.ModelMultipleChoiceField(
+    active_wikis = forms.ModelMultipleChoiceField(
         queryset=Wiki.objects.none(),
         widget=forms.CheckboxSelectMultiple(),
+        required=False,
+    )
+    archived_wikis = forms.ModelMultipleChoiceField(
+        queryset=Wiki.objects.none(),
+        widget=forms.CheckboxSelectMultiple(),
+        required=False,
     )
 
     def __init__(self, *args, available_wikis=None, **kwargs):
         super().__init__(*args, **kwargs)
         if available_wikis is not None:
-            self.fields["wikis"].queryset = available_wikis
+            self.fields["active_wikis"].queryset = available_wikis.active()
+            self.fields["archived_wikis"].queryset = available_wikis.archived()
 
     def clean_q(self):
         q = self.cleaned_data["q"]

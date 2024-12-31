@@ -7,7 +7,7 @@ body.powerwiki_show .powerwiki__content {
 
   .powerwiki__page {
     a[data-missing=True] {
-      color: red;
+      color: var(--powerwiki-error);
       text-decoration-style: dashed;
     }
   }
