@@ -20,7 +20,7 @@ classifiers = [
 keywords = ["django", "wiki"]
 requires-python = ">=3.7"
 dependencies = [
-    "Django>=2.2",
+    "Django>=3.2",
     "django-yaa-settings",
     "beautifulsoup4",
     "docutils",
@@ -28,8 +28,8 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "http://radiac.net/projects/django-powerwiki/"
-"Documentation" = "http://radiac.net/projects/django-powerwiki/"
+"Homepage" = "https://radiac.net/projects/django-powerwiki/"
+"Documentation" = "https://django-powerwiki.readthedocs.io/en/latest/"
 "Source" = "https://github.com/radiac/django-powerwiki"
 "Bug Tracker" = "https://github.com/radiac/django-powerwiki/issues"
 
