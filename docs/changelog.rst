@@ -5,6 +5,14 @@ Powerwiki Changes
 Changelog
 =========
 
+0.5.1, 2025-01-01
+-----------------
+
+Bugfix:
+
+* Add missing default wiki logo
+
+
 0.5.0, 2024-12-31
 -----------------
 
